@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="1920px" height="80px" viewBox="0 0 1920 80" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>大标题背景框 </title>
+    <defs>
+        <rect id="path-1" x="0" y="0" width="1920" height="80"></rect>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-3">
+            <stop stop-color="#00EA88" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0.3" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="1.11022302e-14%" id="linearGradient-4">
+            <stop stop-color="#7AFFBA" offset="0%"></stop>
+            <stop stop-color="#7AFFBA" stop-opacity="0.4" offset="100%"></stop>
+        </linearGradient>
+        <polyline id="path-5" points="1376 0 1256 9.9475983e-14 1184 56 704 56 632 9.9475983e-14 512 0"></polyline>
+        <filter x="-0.6%" y="-13.4%" width="101.3%" height="126.8%" filterUnits="objectBoundingBox" id="filter-6">
+            <feGaussianBlur stdDeviation="3" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="-5" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0.917647059   0 0 0 0 0.533333333  0 0 0 0.5 0" type="matrix" in="shadowInnerInner1" result="shadowMatrixInner1"></feColorMatrix>
+            <feOffset dx="-4" dy="0" in="SourceAlpha" result="shadowOffsetInner2"></feOffset>
+            <feComposite in="shadowOffsetInner2" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner2"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.478431373   0 0 0 0 1   0 0 0 0 0.729411765  0 0 0 1 0" type="matrix" in="shadowInnerInner2" result="shadowMatrixInner2"></feColorMatrix>
+            <feOffset dx="4" dy="0" in="SourceAlpha" result="shadowOffsetInner3"></feOffset>
+            <feComposite in="shadowOffsetInner3" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner3"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.478431373   0 0 0 0 1   0 0 0 0 0.729411765  0 0 0 1 0" type="matrix" in="shadowInnerInner3" result="shadowMatrixInner3"></feColorMatrix>
+            <feMerge>
+                <feMergeNode in="shadowMatrixInner1"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner2"></feMergeNode>
+                <feMergeNode in="shadowMatrixInner3"></feMergeNode>
+            </feMerge>
+        </filter>
+        <linearGradient x1="50%" y1="50%" x2="50%" y2="100%" id="linearGradient-7">
+            <stop stop-color="#134859" stop-opacity="0.4" offset="0%"></stop>
+            <stop stop-color="#134859" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="5.55111512e-15%" x2="50%" y2="119.238608%" id="linearGradient-8">
+            <stop stop-color="#00EA88" offset="0%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <filter x="-1.2%" y="-38.4%" width="102.4%" height="176.8%" filterUnits="objectBoundingBox" id="filter-9">
+            <feGaussianBlur stdDeviation="7" in="SourceGraphic"></feGaussianBlur>
+        </filter>
+        <linearGradient x1="90.1477833%" y1="100%" x2="9.85221675%" y2="100%" id="linearGradient-10">
+            <stop stop-color="#00EA88" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#00EA88" offset="49.757062%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="50%" x2="50%" y2="100%" id="linearGradient-11">
+            <stop stop-color="#00EA88" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0.2" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="50%" y1="100%" x2="50%" y2="1.11022302e-14%" id="linearGradient-12">
+            <stop stop-color="#00EA88" offset="0%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0.4" offset="100%"></stop>
+        </linearGradient>
+        <polyline id="path-13" points="1302 72 1288.1735 80 599.8265 80 586 72"></polyline>
+        <filter x="-0.8%" y="-79.6%" width="101.7%" height="260.8%" filterUnits="objectBoundingBox" id="filter-14">
+            <feGaussianBlur stdDeviation="3" in="SourceAlpha" result="shadowBlurInner1"></feGaussianBlur>
+            <feOffset dx="0" dy="-5" in="shadowBlurInner1" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0   0 0 0 0 0.917647059   0 0 0 0 0.533333333  0 0 0 0.5 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="50%" y1="0%" x2="50%" y2="100%" id="linearGradient-15">
+            <stop stop-color="#00EA88" stop-opacity="0.2" offset="0%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="0%" y1="50%" x2="100%" y2="50%" id="linearGradient-16">
+            <stop stop-color="#00EA88" stop-opacity="0.6" offset="0%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0" offset="100%"></stop>
+        </linearGradient>
+    </defs>
+    <g id="大屏可视化-案例" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="大标题背景框-">
+            <mask id="mask-2" fill="white">
+                <use xlink:href="#path-1"></use>
+            </mask>
+            <g id="矩形"></g>
+            <g id="编组" mask="url(#mask-2)">
+                <g transform="translate(16.000000, 0.000000)">
+                    <g id="路径" stroke="none" fill="none">
+                        <use fill="url(#linearGradient-3)" fill-rule="evenodd" xlink:href="#path-5"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-6)" xlink:href="#path-5"></use>
+                        <use stroke="url(#linearGradient-4)" stroke-width="4" xlink:href="#path-5"></use>
+                    </g>
+                    <path d="M1820,40 C1644,18.6666667 1456,8 1256,8 C1256,8 1232,26.6666667 1184,64 L704,64 C656,26.6666667 632,8 632,8 C432,8 244,18.6666667 68,40" id="路径" stroke="url(#linearGradient-8)" stroke-width="1" fill="url(#linearGradient-7)" fill-rule="evenodd" filter="url(#filter-9)"></path>
+                    <path d="M1820,40 C1644,18.6666667 1456,8 1256,8 C1256,8 1232,26.6666667 1184,64 L704,64 C656,26.6666667 632,8 632,8 C432,8 244,18.6666667 68,40" id="路径" stroke="url(#linearGradient-10)" stroke-width="2" fill="none" opacity="0.100000001"></path>
+                    <g id="编组-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(1194.214286, 9.000000)">
+                        <path d="M70.7142857,0 C70.7142857,0 47.1428571,18.3333333 0,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.400000006"></path>
+                        <path d="M80.7142857,0 C80.7142857,0 57.1428571,18.3333333 10,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.319999993"></path>
+                        <path d="M90.7142857,0 C90.7142857,0 67.1428571,18.3333333 20,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.239999995"></path>
+                        <path d="M100.714286,0 C100.714286,0 77.1428571,18.3333333 30,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.159999996"></path>
+                        <path d="M110.714286,0 C110.714286,0 87.1428571,18.3333333 40,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.0799999982"></path>
+                        <path d="M120.714286,0 C120.714286,0 97.1428571,18.3333333 50,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.0399999991"></path>
+                    </g>
+                    <g id="编组-2" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(634.571429, 36.500000) scale(-1, 1) translate(-634.571429, -36.500000) translate(574.214286, 9.000000)">
+                        <path d="M70.7142857,0 C70.7142857,0 47.1428571,18.3333333 0,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.400000006"></path>
+                        <path d="M80.7142857,0 C80.7142857,0 57.1428571,18.3333333 10,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.319999993"></path>
+                        <path d="M90.7142857,0 C90.7142857,0 67.1428571,18.3333333 20,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.239999995"></path>
+                        <path d="M100.714286,0 C100.714286,0 77.1428571,18.3333333 30,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.159999996"></path>
+                        <path d="M110.714286,0 C110.714286,0 87.1428571,18.3333333 40,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.0799999982"></path>
+                        <path d="M120.714286,0 C120.714286,0 97.1428571,18.3333333 50,55" id="路径" stroke="#00EA88" stroke-width="2" opacity="0.0399999991"></path>
+                    </g>
+                    <g id="路径" stroke="none" fill="none" opacity="0.200000003">
+                        <use fill="url(#linearGradient-11)" fill-rule="evenodd" xlink:href="#path-13"></use>
+                        <use fill="black" fill-opacity="1" filter="url(#filter-14)" xlink:href="#path-13"></use>
+                        <use stroke="url(#linearGradient-12)" stroke-width="2" xlink:href="#path-13"></use>
+                    </g>
+                    <line x1="1288" y1="74.5" x2="600" y2="74.5" id="路径" stroke="#00EA88" stroke-width="4" fill="none" opacity="0.200000003" stroke-dasharray="1,40"></line>
+                    <g id="编组-12" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(1832.820618, 43.107117)">
+                        <path d="M0,0 L20.6967163,1.8928833 L55.1793823,36.8928833" id="路径" stroke="url(#linearGradient-16)" stroke-width="2" fill="url(#linearGradient-15)"></path>
+                    </g>
+                    <g id="编组-12" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(27.589691, 61.553558) scale(-1, 1) translate(-27.589691, -61.553558) translate(0.000000, 43.107117)">
+                        <path d="M0,0 L20.6967163,1.8928833 L55.1793823,36.8928833" id="路径" stroke="url(#linearGradient-16)" stroke-width="2" fill="url(#linearGradient-15)"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

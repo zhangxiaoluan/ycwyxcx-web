@@ -1,0 +1,23 @@
+@font-face {
+    font-family: 'numberFont';
+    src: url('./DS-DIGIT.TTF') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+  font-family: 'dldp';
+  src: url('./dldp.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+@font-face {
+  font-family: '0LQho0GF';
+  src: url('./0LQho0GF.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+

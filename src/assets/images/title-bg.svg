@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="366px" height="40px" viewBox="0 0 366 40" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>小标题背景框</title>
+    <defs>
+        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-1">
+            <stop stop-color="#134859" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#134859" stop-opacity="0.4" offset="82.8650841%"></stop>
+            <stop stop-color="#134859" offset="100%"></stop>
+        </linearGradient>
+        <linearGradient x1="18.8918011%" y1="49.4027315%" x2="16.1459513%" y2="50.5972685%" id="linearGradient-2">
+            <stop stop-color="#00EA88" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0.2" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-3" points="366.002007 0.00164372449 366.002007 40.001644 16.0020068 40.002145 0 0"></polygon>
+        <filter x="-0.3%" y="-2.5%" width="100.5%" height="105.0%" filterUnits="objectBoundingBox" id="filter-4">
+            <feOffset dx="2" dy="0" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.478431373   0 0 0 0 1   0 0 0 0 0.729411765  0 0 0 1 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+        <linearGradient x1="100%" y1="50%" x2="0%" y2="50%" id="linearGradient-5">
+            <stop stop-color="#134859" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#134859" stop-opacity="0.4" offset="82.8650841%"></stop>
+            <stop stop-color="#134859" offset="99.9183922%"></stop>
+        </linearGradient>
+        <linearGradient x1="18.8918011%" y1="49.3757398%" x2="16.1459513%" y2="50.6242602%" id="linearGradient-6">
+            <stop stop-color="#00EA88" stop-opacity="0" offset="0%"></stop>
+            <stop stop-color="#00EA88" stop-opacity="0.2" offset="100%"></stop>
+        </linearGradient>
+        <polygon id="path-7" points="366.002007 0.00164372449 366.002007 40.001644 24.0020068 40.002145 8 0"></polygon>
+        <filter x="-0.3%" y="-2.5%" width="100.6%" height="105.0%" filterUnits="objectBoundingBox" id="filter-8">
+            <feOffset dx="2" dy="0" in="SourceAlpha" result="shadowOffsetInner1"></feOffset>
+            <feComposite in="shadowOffsetInner1" in2="SourceAlpha" operator="arithmetic" k2="-1" k3="1" result="shadowInnerInner1"></feComposite>
+            <feColorMatrix values="0 0 0 0 0.478431373   0 0 0 0 1   0 0 0 0 0.729411765  0 0 0 1 0" type="matrix" in="shadowInnerInner1"></feColorMatrix>
+        </filter>
+    </defs>
+    <g id="大屏可视化-案例" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="电力系统" transform="translate(-40.000000, -120.000000)">
+            <g id="小标题背景框" transform="translate(39.997993, 119.998356)">
+                <g id="路径" opacity="0.200000003">
+                    <use fill="url(#linearGradient-1)" fill-rule="evenodd" xlink:href="#path-3"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-4)" xlink:href="#path-3"></use>
+                    <path stroke="url(#linearGradient-2)" stroke-width="1" d="M0.7385375,0.500003317 L365.502007,0.501641479 L365.502007,39.5016447 L16.3405141,39.5021445 L0.7385375,0.500003317 Z" stroke-linejoin="square"></path>
+                </g>
+                <g id="路径">
+                    <use fill="url(#linearGradient-5)" fill-rule="evenodd" xlink:href="#path-7"></use>
+                    <use fill="black" fill-opacity="1" filter="url(#filter-8)" xlink:href="#path-7"></use>
+                    <path stroke="url(#linearGradient-6)" stroke-width="1" d="M8.73853753,0.500003391 L365.502007,0.501641429 L365.502007,39.5016447 L24.3405141,39.5021445 L8.73853753,0.500003391 Z" stroke-linejoin="square"></path>
+                </g>
+                <polygon id="路径" fill="#7AFFBA" points="366 38.0000822 366 39.9999749 364.000011 40 364 38"></polygon>
+            </g>
+        </g>
+    </g>
+</svg>
