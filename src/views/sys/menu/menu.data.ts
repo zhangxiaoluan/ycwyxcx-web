@@ -48,8 +48,8 @@ export const searchFormSchema: FormSchema[] = [
     component: 'Select',
     componentProps: {
       options: [
-        { label: '停用', value: 0 },
-        { label: '启用', value: 1 },
+        { label: '停用', value: '0' },
+        { label: '启用', value: '1' },
       ],
     },
     colProps: { span: 5 },
@@ -93,11 +93,6 @@ export const formSchema: FormSchema[] = [
         value: 'id',
         // key: 'id',
       },
-      // replaceFields: {
-      //   title: 'title',
-      //   key: 'id',
-      //   value: 'id',
-      // },
       getPopupContainer: () => document.body,
     },
   },
@@ -166,7 +161,7 @@ export const formSchema: FormSchema[] = [
     field: 'keepalive',
     label: '是否缓存',
     component: 'RadioButtonGroup',
-    defaultValue: 0,
+    defaultValue: '0',
     componentProps: {
       options: [
         { label: '否', value: '0' },

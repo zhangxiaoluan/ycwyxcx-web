@@ -39,16 +39,19 @@
         setDrawerProps({ confirmLoading: false });
         isUpdate.value = !!data?.isUpdate;
 
+        let record = data.record || {};
+
         const treeData = await getMenuList();
-        console.log('treeData', treeData)
-        await updateSchema({
-          field: 'parentId',
-          componentProps: { treeData },
-        });
+
+        await updateSchema({ field: 'parentId', componentProps: { treeData } });
 
         if (unref(isUpdate)) {
-          selfId.value = data.record.id;
-          await setFieldsValue({ ...data.record });
+          selfId.value = record.id;
+          await setFieldsValue({
+            ...record,
+            status: String(record.status),
+            display: String(record.display),
+          });
         }
       });
 
