@@ -3,9 +3,6 @@
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 添加 </a-button>
-        <Tooltip title="导出所有数据" class="export-icon">
-          <UploadOutlined :style="{ fontSize: '15pt' }" @click="handleExport" />
-        </Tooltip>
       </template>
 
       <template #bodyCell="{ column, record }">
@@ -29,11 +26,11 @@
                 onClick: handleEdit.bind(null, record),
               },
               {
-                icon: 'ant-design:sync-outlined',
-                label: '密码重置',
-                color: 'warning',
+                icon: 'ant-design:delete-outlined',
+                color: 'error',
+                label: '删除',
                 popConfirm: {
-                  title: '是否重置密码？',
+                  title: '是否删除？',
                   placement: 'left',
                   confirm: restPas.bind(null, record),
                 },
@@ -49,19 +46,18 @@
 </template>
 
 <script lang="ts" setup>
-  import { Tooltip, Tag, message } from 'ant-design-vue';
-  import { UploadOutlined } from '@ant-design/icons-vue';
+  import { Tag, message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { useDrawer } from '@/components/Drawer';
   import FormDrawer from './FormDrawer.vue';
   import { columns } from './data';
-  import { merchantPage } from '@/api/Page/shop';
+  import { announcementPage, announcementDel } from '@/api/Page/gonggao';
 
   const [registerDrawer, { openDrawer }] = useDrawer();
 
   const [registerTable, { reload }] = useTable({
-    title: '商户列表',
-    api: merchantPage,
+    title: '内容列表',
+    api: announcementPage,
     columns,
     isTreeTable: false,
     pagination: true,
@@ -95,32 +91,14 @@
   }
 
   // 删除
-  // function handleDelete(record: Recordable) {
-  //   remove(record.id);
-  //   reload();
-  // }
-
-  // 重置密码
-  const restPas = (pas) => {
-    resetPasswd(pas.userId).then((res) => {
-      if (res) {
-        message.success('密码重置成功');
-      }
+  const restPas = (record: Recordable) => {
+    announcementDel(record.id).then(() => {
+      message.success('成功');
+      reload();
     });
   };
-
-  function handleExport() {
-    window.location.href = exportExcel();
-  }
 
   function handleSuccess() {
     reload();
   }
-
-  // function onFetchSuccess() {
-  //   // 演示默认展开所有表项
-  //   nextTick(expandAll);
-  // }
 </script>
-
-<style></style>

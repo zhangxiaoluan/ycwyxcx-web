@@ -55,13 +55,13 @@
   import { useDrawer } from '@/components/Drawer';
   import FormDrawer from './FormDrawer.vue';
   import { columns } from './data';
-  import { merchantPage } from '@/api/Page/shop';
+  import { communityPage } from '@/api/Page/community';
 
   const [registerDrawer, { openDrawer }] = useDrawer();
 
   const [registerTable, { reload }] = useTable({
-    title: '商户列表',
-    api: merchantPage,
+    title: '社区列表',
+    api: communityPage,
     columns,
     isTreeTable: false,
     pagination: true,
