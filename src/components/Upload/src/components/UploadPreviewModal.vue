@@ -31,12 +31,14 @@
   const emit = defineEmits(['list-change', 'register', 'delete']);
 
   let columns: BasicColumn[] | FileBasicColumn[] = createPreviewColumns();
+
   let actionColumn: any;
 
   const [register] = useModalInner();
   const { t } = useI18n();
 
   const fileListRef = ref<BaseFileItem[] | Array<any>>([]);
+
   watch(
     () => props.previewColumns,
     () => {
@@ -69,11 +71,12 @@
             console.error('return value should be object');
             return;
           }
+          let name = item?.originalFilename || item.name || item?.url?.split('/').pop() || '';
           return {
             uid: item?.uid,
             url: item?.url,
             type: item?.url?.split('.').pop() || '',
-            name: item?.url?.split('/').pop() || '',
+            name: name,
           };
         });
     },

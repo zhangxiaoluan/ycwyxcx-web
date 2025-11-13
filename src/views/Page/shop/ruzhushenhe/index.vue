@@ -3,23 +3,9 @@
     <BasicTable @register="registerTable">
       <template #toolbar>
         <a-button type="primary" @click="handleCreate"> 添加 </a-button>
-        <Tooltip title="导出所有数据" class="export-icon">
-          <UploadOutlined :style="{ fontSize: '15pt' }" @click="handleExport" />
-        </Tooltip>
       </template>
 
       <template #bodyCell="{ column, record }">
-        <template v-if="column.key === 'roles'">
-          <Tag
-            color="#0960BD"
-            v-for="(item, index) in record['roles']"
-            :key="index"
-            class="!mr-2 !mb-2"
-          >
-            {{ item.roleName }}
-          </Tag>
-        </template>
-
         <template v-if="column.key === 'action'">
           <TableAction
             :actions="[
@@ -29,11 +15,11 @@
                 onClick: handleEdit.bind(null, record),
               },
               {
-                icon: 'ant-design:sync-outlined',
-                label: '密码重置',
-                color: 'warning',
+                icon: 'ant-design:delete-outlined',
+                label: '删除',
+                color: 'error',
                 popConfirm: {
-                  title: '是否重置密码？',
+                  title: '是否删除？',
                   placement: 'left',
                   confirm: restPas.bind(null, record),
                 },
@@ -49,13 +35,15 @@
 </template>
 
 <script lang="ts" setup>
-  import { Tooltip, Tag, message } from 'ant-design-vue';
-  import { UploadOutlined } from '@ant-design/icons-vue';
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { useDrawer } from '@/components/Drawer';
   import FormDrawer from './FormDrawer.vue';
   import { columns } from './data';
-  import { merchantPage } from '@/api/Page/shop';
+  import { merchantDel, merchantPage } from '@/api/Page/shop';
+
+  import { useMessage } from '@/hooks/web/useMessage';
+
+  const { createMessage } = useMessage();
 
   const [registerDrawer, { openDrawer }] = useDrawer();
 
@@ -95,32 +83,18 @@
   }
 
   // 删除
-  // function handleDelete(record: Recordable) {
-  //   remove(record.id);
-  //   reload();
-  // }
-
-  // 重置密码
-  const restPas = (pas) => {
-    resetPasswd(pas.userId).then((res) => {
+  const restPas = (record: Recordable) => {
+    merchantDel(record.id).then((res) => {
       if (res) {
-        message.success('密码重置成功');
+        createMessage.success('成功');
+        reload();
       }
     });
   };
 
-  function handleExport() {
-    window.location.href = exportExcel();
-  }
-
   function handleSuccess() {
     reload();
   }
-
-  // function onFetchSuccess() {
-  //   // 演示默认展开所有表项
-  //   nextTick(expandAll);
-  // }
 </script>
 
 <style></style>

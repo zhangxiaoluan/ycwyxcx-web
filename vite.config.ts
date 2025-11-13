@@ -15,6 +15,7 @@ export default defineApplicationConfig({
       ],
     },
     server: {
+      port: 2811,
       proxy: {
         '/api': {
           target: 'http://81.71.98.7:8801/api',

@@ -189,7 +189,6 @@
       emit('update:value', value);
       emit('change', value);
     } catch (e: any) {
-      console.log(e);
       info.onError!(e);
     }
   }
@@ -198,10 +197,14 @@
     const list = (fileList.value || [])
       .filter((item) => item?.status === UploadResultStatus.DONE)
       .map((item: any) => {
-        if (item?.response && props?.resultField) {
-          return item?.response;
+        const { response } = item;
+        const result = response?.result || {};
+        if (response && props?.resultField) {
+          // return item?.response;
+          return result;
         }
-        return item?.url || item?.response?.url;
+        // return item?.url || item?.response?.url;
+        return result;
       });
     return list;
   }

@@ -1,71 +1,87 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
-import { allRoles } from '@/api/sys/role';
+import { uploadApi } from '@/api/sys/upload';
+import { merchantType } from '@/api/Page/shop';
 
 export const columns: BasicColumn[] = [
-  { title: '登录帐号', dataIndex: 'account', fixed: 'left' },
-  { title: '用户名', dataIndex: 'username' },
-  { title: '手机号码', dataIndex: 'cellphone' },
-  { title: '过期时间', dataIndex: 'expiredAt' },
-  { title: '所属机构', dataIndex: 'orgName' },
-  { title: '角色', dataIndex: 'roles' },
+  { title: '名称', dataIndex: 'name', fixed: 'left' },
+  { title: '描述', dataIndex: 'description' },
+  { title: '地址', dataIndex: 'address' },
+  { title: '电话', dataIndex: 'phone' },
+  { title: '营业时间', dataIndex: 'businessHours' },
+  { title: '评分', dataIndex: 'rating' },
 ];
 
 export const formSchema: FormSchema[] = [
   {
-    field: 'account',
-    label: '登录帐号',
+    field: 'name',
+    label: '名称',
     component: 'Input',
-    required: true,
-    dynamicDisabled: false,
-    show: true,
     colProps: { span: 24 },
   },
   {
-    field: 'passwd',
-    required: true,
-    label: '登录密码',
-    component: 'InputPassword',
-    dynamicDisabled: false,
-    show: true,
+    field: 'description',
+    label: '描述',
+    component: 'Input',
     colProps: { span: 24 },
   },
   {
-    field: 'username',
-    label: '用户名',
-    required: true,
+    field: 'address',
+    label: '地址',
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
-    field: 'cellphone',
-    label: '手机号码',
-    required: true,
+    field: 'phone',
+    label: '电话',
     component: 'Input',
+    colProps: { span: 24 },
   },
   {
-    field: 'orgId',
-    label: '所属机构',
-    required: false,
-    component: 'TreeSelect',
+    field: 'businessHours',
+    label: '营业时间',
+    component: 'DatePicker',
+    colProps: { span: 24 },
     componentProps: {
-      fieldNames: {
-        label: 'name',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
+      valueFormat: 'YYYY-MM-DD HH:MM:ss',
+      format: 'YYYY-MM-DD HH:MM:ss',
+      showTime: true,
+      // type: 'datetimerange',
     },
   },
   {
-    field: 'roles',
-    label: '所属角色',
+    field: 'categoryId',
+    label: '客户类型',
     component: 'ApiSelect',
-    required: false,
+    colProps: { span: 24 },
     componentProps: {
-      api: allRoles,
-      mode: 'multiple',
-      resultField: 'result',
+      api: merchantType,
+      showSearch: true,
+      // apiSearch: {
+      //   show: true,
+      //   searchName: 'name',
+      // },
+      // resultField: 'result',
       labelField: 'name',
       valueField: 'id',
-      immediate: true,
+    },
+  },
+  {
+    field: 'images',
+    label: '店铺图片',
+    component: 'ImageUpload',
+    colProps: { span: 24 },
+    componentProps: {
+      api: uploadApi,
+    },
+  },
+  {
+    field: 'rating',
+    label: '评分',
+    component: 'InputNumber',
+    colProps: { span: 24 },
+    componentProps: {
+      min: 0,
+      max: 5,
     },
   },
 ];

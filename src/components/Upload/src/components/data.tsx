@@ -7,6 +7,8 @@ import ThumbUrl from './ThumbUrl.vue';
 import { useI18n } from '@/hooks/web/useI18n';
 import { previewColumnsFnType } from '../props';
 
+import filesImg from '@/assets/images/files.png';
+
 const { t } = useI18n();
 
 // 文件上传列表
@@ -71,6 +73,7 @@ export function createTableColumns(): FileBasicColumn[] {
     },
   ];
 }
+
 export function createActionColumn(handleRemove: Function): FileBasicColumn {
   return {
     width: 120,
@@ -102,7 +105,8 @@ export function createPreviewColumns(): BasicColumn[] {
       width: 100,
       customRender: ({ record }) => {
         const { url } = (record as PreviewFileItem) || {};
-        return isImgTypeByName(url) && <ThumbUrl fileUrl={url} />;
+        const imgUrl = isImgTypeByName(url) ? url : filesImg;
+        return <ThumbUrl fileUrl={imgUrl} />;
       },
     },
     {

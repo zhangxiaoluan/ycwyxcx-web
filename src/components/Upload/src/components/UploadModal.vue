@@ -68,6 +68,8 @@
   import { useI18n } from '@/hooks/web/useI18n';
   import { get } from 'lodash-es';
 
+  import filesImg from '@/assets/images/files.png';
+
   const props = defineProps({
     ...basicProps,
     previewFileList: {
@@ -79,6 +81,7 @@
   const emit = defineEmits(['change', 'register', 'delete']);
 
   const columns = createTableColumns();
+
   const actionColumn = createActionColumn(handleRemove);
 
   // 是否正在上传
@@ -155,7 +158,13 @@
         ];
       });
     } else {
-      fileListRef.value = [...unref(fileListRef), commonItem];
+      fileListRef.value = [
+        ...unref(fileListRef),
+        {
+          thumbUrl: filesImg,
+          ...commonItem,
+        },
+      ];
     }
     return false;
   }
@@ -199,7 +208,7 @@
         item.response = {
           code: 0,
           message: 'upload Success!',
-          url: get(ret, props.resultField),
+          result: get(ret, props.resultField),
         };
       }
       return {
@@ -256,8 +265,9 @@
 
     for (const item of fileListRef.value) {
       const { status, response } = item;
+      const result = response?.result || {};
       if (status === UploadResultStatus.SUCCESS && response) {
-        fileList.push(response.url);
+        fileList.push(result);
       }
     }
     // 存在一个上传成功的即可保存

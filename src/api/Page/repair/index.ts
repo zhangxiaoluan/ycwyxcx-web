@@ -6,5 +6,5 @@ enum Api {
 
 // 列表
 export function repairPage(params) {
-  return defHttp.get({ url: Api.repairPage, params: params }, { errorMessageMode: 'message' });
+  return defHttp.post({ url: Api.repairPage, params: params }, { errorMessageMode: 'message' });
 }
