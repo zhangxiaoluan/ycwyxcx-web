@@ -12,20 +12,22 @@
 </template>
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
-  import { message } from 'ant-design-vue';
   import { BasicForm, useForm } from '@/components/Form/index';
   import { formSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { merchantAdd, merchantEdit } from '@/api/Page/shop';
+  import { categoryHomeAdd, categoryHomeEdit } from '@/api/Page/community';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   let emit = defineEmits(['register', 'success']);
 
+  const { createMessage } = useMessage();
+
   const isUpdate = ref(true);
 
-  const selfId = ref({});
+  const selfId = ref(null);
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
-    labelWidth: 100,
+    labelWidth: 80,
     schemas: formSchema,
     showActionButtonGroup: false,
     baseColProps: { span: 24 },
@@ -43,6 +45,8 @@
       if (unref(isUpdate)) {
         let record = data.record || {};
         selfId.value = record.id;
+
+        // 设置表单的值
         await setFieldsValue({ ...record, categoryId: String(record.categoryId) });
         setDrawerProps({ loading: false });
       } else {
@@ -57,24 +61,22 @@
   async function handleSubmit() {
     try {
       const values = await validate();
-
-      let images = values.images[0]?.url;
-
-      unref(isUpdate) ? funApi(merchantEdit, { id: selfId.value }) : funApi(merchantAdd);
-
+      unref(isUpdate) ? funApi(categoryHomeEdit, { id: selfId.value }) : funApi(categoryHomeAdd);
       // eslint-disable-next-line no-inner-declarations
       function funApi(api: any, other = {}) {
         changeOkLoading(true);
         setDrawerProps({ loading: true });
-        api({ ...values, cellphone: values.account, ...other, images })
+        api({ ...values, ...other })
           .then(() => {
             closeDrawer();
             emit('success');
           })
-          .catch(({ response }) => {
+          .finally(() => {
             changeOkLoading(false);
             setDrawerProps({ loading: false });
-            message.warn(response.data.message);
+          })
+          .catch(({ response }) => {
+            createMessage.warn(response.data.message);
           });
       }
     } catch (e) {

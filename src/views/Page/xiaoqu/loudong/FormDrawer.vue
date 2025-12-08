@@ -12,17 +12,21 @@
 </template>
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
-  import { message } from 'ant-design-vue';
   import { BasicForm, useForm } from '@/components/Form/index';
   import { formSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { merchantAdd, merchantEdit } from '@/api/Page/shop';
+  import { buildingAdd, buildingEdit } from '@/api/Page/xiaoqu';
+  import { useMessage } from '@/hooks/web/useMessage';
 
   let emit = defineEmits(['register', 'success']);
 
+  const { createMessage } = useMessage();
+
   const isUpdate = ref(true);
 
-  const selfId = ref({});
+  const selfId = ref(null);
+
+  const communityId = ref(null);
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 100,
@@ -37,13 +41,19 @@
       changeOkLoading(false);
       setDrawerProps({ loading: true });
 
+      communityId.value = data.communityId;
+
       isUpdate.value = !!data?.isUpdate;
 
       // 编辑传入数据
       if (unref(isUpdate)) {
         let record = data.record || {};
         selfId.value = record.id;
-        await setFieldsValue({ ...record, categoryId: String(record.categoryId) });
+
+        // 设置表单的值
+        await setFieldsValue({
+          ...record,
+        });
         setDrawerProps({ loading: false });
       } else {
         setDrawerProps({ loading: false });
@@ -57,16 +67,16 @@
   async function handleSubmit() {
     try {
       const values = await validate();
-
-      let images = values.images[0]?.url;
-
-      unref(isUpdate) ? funApi(merchantEdit, { id: selfId.value }) : funApi(merchantAdd);
-
+      unref(isUpdate) ? funApi(buildingEdit, { id: selfId.value }) : funApi(buildingAdd);
       // eslint-disable-next-line no-inner-declarations
       function funApi(api: any, other = {}) {
         changeOkLoading(true);
         setDrawerProps({ loading: true });
-        api({ ...values, cellphone: values.account, ...other, images })
+        api({
+          ...values,
+          communityId: communityId.value,
+          ...other,
+        })
           .then(() => {
             closeDrawer();
             emit('success');
@@ -74,7 +84,7 @@
           .catch(({ response }) => {
             changeOkLoading(false);
             setDrawerProps({ loading: false });
-            message.warn(response.data.message);
+            createMessage.warn(response.data.message);
           });
       }
     } catch (e) {

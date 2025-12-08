@@ -16,7 +16,7 @@
   import { BasicForm, useForm } from '@/components/Form/index';
   import { formSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { merchantAdd, merchantEdit } from '@/api/Page/shop';
+  import { categoryAdd, categoryEdit } from '@/api/Page/shop';
 
   let emit = defineEmits(['register', 'success']);
 
@@ -25,7 +25,7 @@
   const selfId = ref({});
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
-    labelWidth: 100,
+    labelWidth: 70,
     schemas: formSchema,
     showActionButtonGroup: false,
     baseColProps: { span: 24 },
@@ -43,7 +43,7 @@
       if (unref(isUpdate)) {
         let record = data.record || {};
         selfId.value = record.id;
-        await setFieldsValue({ ...record, categoryId: String(record.categoryId) });
+        await setFieldsValue({ ...record });
         setDrawerProps({ loading: false });
       } else {
         setDrawerProps({ loading: false });
@@ -58,15 +58,13 @@
     try {
       const values = await validate();
 
-      let images = values.images[0]?.url;
-
-      unref(isUpdate) ? funApi(merchantEdit, { id: selfId.value }) : funApi(merchantAdd);
+      unref(isUpdate) ? funApi(categoryEdit, { id: selfId.value }) : funApi(categoryAdd);
 
       // eslint-disable-next-line no-inner-declarations
       function funApi(api: any, other = {}) {
         changeOkLoading(true);
         setDrawerProps({ loading: true });
-        api({ ...values, cellphone: values.account, ...other, images })
+        api({ ...values, cellphone: values.account, ...other })
           .then(() => {
             closeDrawer();
             emit('success');
@@ -78,6 +76,8 @@
           });
       }
     } catch (e) {
+      changeOkLoading(false);
+      setDrawerProps({ loading: false });
       console.warn('请填写表单');
     }
   }

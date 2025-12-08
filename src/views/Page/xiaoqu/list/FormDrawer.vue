@@ -4,7 +4,7 @@
     @register="registerDrawer"
     showFooter
     :title="getTitle"
-    width="30%"
+    width="60%"
     @ok="handleSubmit"
   >
     <BasicForm @register="registerForm" />
@@ -12,13 +12,16 @@
 </template>
 <script lang="ts" setup>
   import { ref, computed, unref } from 'vue';
-  import { message } from 'ant-design-vue';
   import { BasicForm, useForm } from '@/components/Form/index';
   import { formSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { merchantAdd, merchantEdit } from '@/api/Page/shop';
+  import { xiaoquAdd, xiaoquEdit } from '@/api/Page/xiaoqu';
+  import { useMessage } from '@/hooks/web/useMessage';
+  import { buildUUID } from '@/utils/uuid';
 
   let emit = defineEmits(['register', 'success']);
+
+  const { createMessage } = useMessage();
 
   const isUpdate = ref(true);
 
@@ -43,7 +46,11 @@
       if (unref(isUpdate)) {
         let record = data.record || {};
         selfId.value = record.id;
-        await setFieldsValue({ ...record, categoryId: String(record.categoryId) });
+
+        // 设置表单的值
+        await setFieldsValue({
+          ...record,
+        });
         setDrawerProps({ loading: false });
       } else {
         setDrawerProps({ loading: false });
@@ -57,16 +64,18 @@
   async function handleSubmit() {
     try {
       const values = await validate();
-
-      let images = values.images[0]?.url;
-
-      unref(isUpdate) ? funApi(merchantEdit, { id: selfId.value }) : funApi(merchantAdd);
-
+      unref(isUpdate) ? funApi(xiaoquEdit, { id: selfId.value }) : funApi(xiaoquAdd);
       // eslint-disable-next-line no-inner-declarations
       function funApi(api: any, other = {}) {
         changeOkLoading(true);
         setDrawerProps({ loading: true });
-        api({ ...values, cellphone: values.account, ...other, images })
+        api({
+          ...values,
+          code: buildUUID().slice(0, 5),
+          province: '宁夏',
+          city: '银川',
+          ...other,
+        })
           .then(() => {
             closeDrawer();
             emit('success');
@@ -74,7 +83,7 @@
           .catch(({ response }) => {
             changeOkLoading(false);
             setDrawerProps({ loading: false });
-            message.warn(response.data.message);
+            createMessage.warn(response.data.message);
           });
       }
     } catch (e) {

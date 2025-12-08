@@ -169,6 +169,8 @@
       return warn('upload api must exist and be a function');
     }
     try {
+      // @ts-ignore
+      const thumbUrl = await getBase64(info.file);
       const res = await api?.({
         data: {
           ...uploadParams,
@@ -184,7 +186,10 @@
         // 不传入 resultField 的情况
         info.onSuccess!(res.data);
       }
-      const value = getValue();
+      const _fileList = getValue();
+      const value = _fileList.map((item) => {
+        return { ...item, thumbUrl };
+      });
       isInnerOperate.value = true;
       emit('update:value', value);
       emit('change', value);
@@ -194,11 +199,11 @@
   }
 
   function getValue() {
-    const list = (fileList.value || [])
+    return (fileList.value || [])
       .filter((item) => item?.status === UploadResultStatus.DONE)
       .map((item: any) => {
         const { response } = item;
-        const result = response?.result || {};
+        const result = { url: response?.url } || {};
         if (response && props?.resultField) {
           // return item?.response;
           return result;
@@ -206,7 +211,6 @@
         // return item?.url || item?.response?.url;
         return result;
       });
-    return list;
   }
 </script>
 

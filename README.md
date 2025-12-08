@@ -24,7 +24,7 @@ Vue 智慧物业 是一个免费开源的中后台模版。使用了最新的`vu
 
 [文档地址](https://doc.vvbin.cn/)
 
-接口：http://81.71.98.7:8801/swagger-ui/index.html#/
+接口：http://62.234.35.7:8801/swagger-ui/index.html#/
 
 ## 准备
 

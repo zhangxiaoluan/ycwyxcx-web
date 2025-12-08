@@ -50,17 +50,12 @@ export const formSchema: FormSchema[] = [
   },
   {
     field: 'categoryId',
-    label: '客户类型',
+    label: '商户类型',
     component: 'ApiSelect',
     colProps: { span: 24 },
     componentProps: {
       api: merchantType,
       showSearch: true,
-      // apiSearch: {
-      //   show: true,
-      //   searchName: 'name',
-      // },
-      // resultField: 'result',
       labelField: 'name',
       valueField: 'id',
     },

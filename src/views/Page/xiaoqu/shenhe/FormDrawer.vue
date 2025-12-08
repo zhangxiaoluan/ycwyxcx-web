@@ -16,16 +16,16 @@
   import { BasicForm, useForm } from '@/components/Form/index';
   import { formSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { merchantAdd, merchantEdit } from '@/api/Page/shop';
+  import { bindingAudit, bindingUnbind } from '@/api/Page/xiaoqu';
 
   let emit = defineEmits(['register', 'success']);
 
   const isUpdate = ref(true);
 
-  const selfId = ref({});
+  const selfId = ref(null);
 
-  const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
-    labelWidth: 100,
+  const [registerForm, { resetFields, validate, updateSchema }] = useForm({
+    labelWidth: 70,
     schemas: formSchema,
     showActionButtonGroup: false,
     baseColProps: { span: 24 },
@@ -34,42 +34,34 @@
   const [registerDrawer, { changeOkLoading, setDrawerProps, closeDrawer }] = useDrawerInner(
     async (data) => {
       await resetFields();
-      changeOkLoading(false);
-      setDrawerProps({ loading: true });
-
       isUpdate.value = !!data?.isUpdate;
-
-      // 编辑传入数据
-      if (unref(isUpdate)) {
-        let record = data.record || {};
-        selfId.value = record.id;
-        await setFieldsValue({ ...record, categoryId: String(record.categoryId) });
-        setDrawerProps({ loading: false });
-      } else {
-        setDrawerProps({ loading: false });
-      }
+      selfId.value = data.record.id;
+      await updateSchema([
+        { field: 'auditRemark', ifShow: unref(isUpdate) },
+        { field: 'remark', ifShow: !unref(isUpdate) },
+      ]);
     },
   );
 
-  const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
+  const getTitle = computed(() => '审核');
 
   // 提交代码
   async function handleSubmit() {
     try {
       const values = await validate();
 
-      let images = values.images[0]?.url;
-
-      unref(isUpdate) ? funApi(merchantEdit, { id: selfId.value }) : funApi(merchantAdd);
+      unref(isUpdate) ? funApi(bindingAudit, { status: '2' }) : funApi(bindingUnbind);
 
       // eslint-disable-next-line no-inner-declarations
       function funApi(api: any, other = {}) {
         changeOkLoading(true);
         setDrawerProps({ loading: true });
-        api({ ...values, cellphone: values.account, ...other, images })
+        api({ ...values, bindingId: selfId.value, ...other })
           .then(() => {
             closeDrawer();
             emit('success');
+            changeOkLoading(false);
+            setDrawerProps({ loading: false });
           })
           .catch(({ response }) => {
             changeOkLoading(false);
@@ -78,6 +70,8 @@
           });
       }
     } catch (e) {
+      changeOkLoading(false);
+      setDrawerProps({ loading: false });
       console.warn('请填写表单');
     }
   }

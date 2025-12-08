@@ -9,6 +9,11 @@ enum Api {
   categoryAdd = `/announcement/category/add`,
   categoryEdit = `/announcement/category/update`,
   categoryDel = `/announcement/category/delete`,
+
+  // 轮播图
+  articlePage = `/web/article/page`,
+  articleAdd = `/web/article`,
+  articleStatus = `/web/article`,
 }
 
 // 列表
@@ -55,4 +60,32 @@ export function categoryEdit(params) {
 
 export function categoryDel(id) {
   return defHttp.delete({ url: Api.categoryDel + '/' + id }, { errorMessageMode: 'message' });
+}
+
+export function articlePage(params) {
+  return defHttp.get({ url: Api.articlePage, params: params }, { errorMessageMode: 'message' });
+}
+
+export function articleAdd(params) {
+  return defHttp.post({ url: Api.articleAdd, params: params }, { errorMessageMode: 'message' });
+}
+
+export function articleEdit(params) {
+  return defHttp.put(
+    { url: `${Api.articleAdd}/${params.id}`, params: params },
+    { errorMessageMode: 'message' },
+  );
+}
+
+export function articleDel(id) {
+  return defHttp.delete({ url: `${Api.articleAdd}/${id}` }, { errorMessageMode: 'message' });
+}
+
+export function articleStatus(id, status) {
+  // 1已发布 2 未发布
+  const field = Number(status) == 1 ? 'offline' : 'publish';
+  return defHttp.put(
+    { url: `${Api.articleStatus}/${id}/${field}` },
+    { errorMessageMode: 'message' },
+  );
 }

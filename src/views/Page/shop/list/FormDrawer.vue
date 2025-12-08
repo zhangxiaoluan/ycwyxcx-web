@@ -4,7 +4,7 @@
     @register="registerDrawer"
     showFooter
     :title="getTitle"
-    width="30%"
+    width="50%"
     @ok="handleSubmit"
   >
     <BasicForm @register="registerForm" />
@@ -16,7 +16,7 @@
   import { BasicForm, useForm } from '@/components/Form/index';
   import { formSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { merchantAdd, merchantEdit } from '@/api/Page/shop';
+  import { productAdd, productEdit } from '@/api/Page/shop';
 
   let emit = defineEmits(['register', 'success']);
 
@@ -43,7 +43,7 @@
       if (unref(isUpdate)) {
         let record = data.record || {};
         selfId.value = record.id;
-        await setFieldsValue({ ...record, categoryId: String(record.categoryId) });
+        await setFieldsValue({ ...record });
         setDrawerProps({ loading: false });
       } else {
         setDrawerProps({ loading: false });
@@ -58,15 +58,16 @@
     try {
       const values = await validate();
 
+      let image = values.image[0]?.url;
       let images = values.images[0]?.url;
 
-      unref(isUpdate) ? funApi(merchantEdit, { id: selfId.value }) : funApi(merchantAdd);
+      unref(isUpdate) ? funApi(productEdit, { id: selfId.value }) : funApi(productAdd);
 
       // eslint-disable-next-line no-inner-declarations
       function funApi(api: any, other = {}) {
         changeOkLoading(true);
         setDrawerProps({ loading: true });
-        api({ ...values, cellphone: values.account, ...other, images })
+        api({ ...values, cellphone: values.account, ...other, image, images })
           .then(() => {
             closeDrawer();
             emit('success');

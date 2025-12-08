@@ -4,7 +4,7 @@
     @register="registerDrawer"
     showFooter
     :title="getTitle"
-    width="30%"
+    width="50%"
     @ok="handleSubmit"
   >
     <BasicForm @register="registerForm" />
@@ -16,7 +16,7 @@
   import { BasicForm, useForm } from '@/components/Form/index';
   import { formSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
-  import { merchantAdd, merchantEdit } from '@/api/Page/shop';
+  import { articleAdd, articleEdit } from '@/api/Page/gonggao';
 
   let emit = defineEmits(['register', 'success']);
 
@@ -43,7 +43,7 @@
       if (unref(isUpdate)) {
         let record = data.record || {};
         selfId.value = record.id;
-        await setFieldsValue({ ...record, categoryId: String(record.categoryId) });
+        await setFieldsValue({ ...record });
         setDrawerProps({ loading: false });
       } else {
         setDrawerProps({ loading: false });
@@ -58,15 +58,17 @@
     try {
       const values = await validate();
 
-      let images = values.images[0]?.url;
+      let coverImage = values.coverImage[0]?.url;
 
-      unref(isUpdate) ? funApi(merchantEdit, { id: selfId.value }) : funApi(merchantAdd);
+      console.log('coverImage', coverImage);
+
+      unref(isUpdate) ? funApi(articleEdit, { id: selfId.value }) : funApi(articleAdd);
 
       // eslint-disable-next-line no-inner-declarations
       function funApi(api: any, other = {}) {
         changeOkLoading(true);
         setDrawerProps({ loading: true });
-        api({ ...values, cellphone: values.account, ...other, images })
+        api({ ...values, cellphone: values.account, ...other, coverImage })
           .then(() => {
             closeDrawer();
             emit('success');
@@ -78,7 +80,8 @@
           });
       }
     } catch (e) {
-      console.warn('请填写表单');
+      changeOkLoading(false);
+      setDrawerProps({ loading: false });
     }
   }
 </script>
