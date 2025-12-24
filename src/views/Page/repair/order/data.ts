@@ -2,12 +2,10 @@ import { BasicColumn, FormSchema } from '@/components/Table';
 import { allRoles } from '@/api/sys/role';
 
 export const columns: BasicColumn[] = [
-  { title: '登录帐号', dataIndex: 'account', fixed: 'left' },
-  { title: '用户名', dataIndex: 'username' },
-  { title: '手机号码', dataIndex: 'cellphone' },
-  { title: '过期时间', dataIndex: 'expiredAt' },
-  { title: '所属机构', dataIndex: 'orgName' },
-  { title: '角色', dataIndex: 'roles' },
+  { title: 'userName', dataIndex: 'userName' },
+  { title: 'userPhone', dataIndex: 'userPhone' },
+  { title: 'categoryName', dataIndex: 'categoryName' },
+  { title: 'categoryName', dataIndex: 'categoryName' },
 ];
 
 export const formSchema: FormSchema[] = [
