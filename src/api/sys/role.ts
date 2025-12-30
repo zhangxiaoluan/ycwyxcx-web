@@ -4,7 +4,7 @@ import { ErrorMessageMode } from '#/axios';
 import { RoleStatusParam } from './model/roleModel';
 
 enum Api {
-  roleDelete = '/system/role/delete',
+  // roleDelete = '/system/role/delete',
   RoleApi = '/system/role',
   ALL_ROLES = '/system/role/all',
   SetRoleStatusApi = '/system/role/status',
@@ -75,7 +75,7 @@ export function updateRole(params: any, mode: ErrorMessageMode = 'modal') {
 export function deleteRole(id: string | number, mode: ErrorMessageMode = 'modal') {
   return defHttp.delete<any>(
     {
-      url: `${Api.roleDelete}/${id}`,
+      url: `${Api.RoleApi}/${id}`,
     },
     {
       errorMessageMode: mode,

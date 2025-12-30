@@ -50,9 +50,14 @@
   const emit = defineEmits(['success', 'register']);
 
   const isUpdate = ref(true);
+
   const treeData = ref<TreeItem[]>([]);
+
   const frontMenuData = ref<any[]>([]);
+
   const id = ref({});
+
+  let halfCheckedKeys = ref([]);
 
   const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
     labelWidth: 80,
@@ -88,7 +93,6 @@
     }
   });
 
-  let halfCheckedKeys = ref([]);
   const check = (_checkKey, e) => {
     halfCheckedKeys.value = e.halfCheckedKeys;
   };
@@ -97,9 +101,11 @@
 
   async function handleSubmit() {
     try {
+      // code
       const values = await validate();
       let apiParams = {
         ...values,
+        code: String(new Date().valueOf()),
         menus: [...halfCheckedKeys.value, ...values.menus],
       };
       setDrawerProps({ confirmLoading: true });

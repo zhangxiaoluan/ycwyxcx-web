@@ -3,7 +3,7 @@
     @register="registerDrawer"
     v-bind="$attrs"
     :title="title === 'edit' ? '角色编辑' : '角色新增'"
-    width="50%"
+    width="30%"
     showFooter
     @ok="handleSubmit"
   >
@@ -48,11 +48,15 @@
 
   // 表单提交
   const handleSubmit = async () => {
-    const values = await validate();
-    let other = { ...values, id: editId.value };
-    title.value === 'edit' ? await editUserRole({ ...other }) : await addUserRole({ ...other });
-    closeDrawer();
-    emit('success');
+    try {
+      const values = await validate();
+      let other = { ...values, id: editId.value };
+      title.value === 'edit' ? await editUserRole({ ...other }) : await addUserRole({ ...other });
+      closeDrawer();
+      emit('success');
+    } catch (err) {
+      console.log('请填写表单');
+    }
   };
   // 表单重置
   const restForm = () => resetFields();

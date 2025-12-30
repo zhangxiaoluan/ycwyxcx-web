@@ -30,7 +30,12 @@
         </template>
 
         <template v-if="column.key === 'icon'">
-          <!--  <TableImg :size="38" class="TableImg" :simpleShow="false" :imgList="[text || '']" />  -->
+          <TableImg
+            :size="38"
+            class="TableImg"
+            :simpleShow="false"
+            :imgList="[record.icon || '']"
+          />
         </template>
       </template>
     </BasicTable>

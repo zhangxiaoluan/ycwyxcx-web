@@ -1,6 +1,6 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
-import { userList } from '@/api/Page/vehicle/driver';
 import { roleOption } from '@/api/Page/prosceniumUser/user-role';
+import { userPage } from '@/api/Page/prosceniumUser/user';
 
 export const columns: BasicColumn[] = [
   { title: '用户姓名', dataIndex: 'userName' },
@@ -20,34 +20,34 @@ export const addOrEditForm: FormSchema[] = [
     field: 'userId',
     component: 'ApiSelect',
     label: '用户',
-    colProps: {
-      span: 12,
-    },
+    colProps: { span: 24 },
+    required: true,
     componentProps: {
-      api: userList,
+      api: () => {
+        return userPage({ size: 99999 }).then((res) => {
+          const records = res.records || [];
+          return records;
+        });
+      },
       labelField: 'name',
       valueField: 'id',
       showSearch: true,
-      filterOption: (input, option) => {
-        return option.label.search(input) != -1;
-      },
     },
-    required: true,
   },
   {
     field: 'roleIds',
     component: 'ApiSelect',
     label: '角色',
     colProps: {
-      span: 12,
+      span: 24,
     },
     componentProps: {
       api: () => roleOption().then((res) => res.records),
-      // mode: 'multiple',
-      // resultField: 'result',
+      mode: 'multiple',
       labelField: 'name',
       valueField: 'id',
-      // immediate: true,
+      showSearch: true,
+      immediate: true,
     },
   },
   {
@@ -55,7 +55,7 @@ export const addOrEditForm: FormSchema[] = [
     component: 'Input',
     label: '用户分组',
     colProps: {
-      span: 12,
+      span: 24,
     },
     componentProps: {},
   },

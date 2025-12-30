@@ -5,25 +5,12 @@ import { setRoleStatus } from '@/api/sys/role';
 import { useMessage } from '@/hooks/web/useMessage';
 
 export const columns: BasicColumn[] = [
-  {
-    title: '角色名称',
-    dataIndex: 'name',
-    width: 200,
-  },
-  {
-    title: '角色值',
-    dataIndex: 'code',
-    width: 180,
-  },
-  {
-    title: '排序',
-    dataIndex: 'ordinal',
-    width: 50,
-  },
+  { title: '角色名称', dataIndex: 'name' },
+  // { title: '角色值', dataIndex: 'code' },
+  { title: '排序', dataIndex: 'ordinal' },
   {
     title: '状态',
     dataIndex: 'status',
-    width: 120,
     customRender: ({ record }) => {
       if (!Reflect.has(record, 'pendingStatus')) {
         record.pendingStatus = false;
@@ -33,6 +20,7 @@ export const columns: BasicColumn[] = [
         checkedChildren: '已启用',
         unCheckedChildren: '已禁用',
         loading: record.pendingStatus,
+        // @ts-ignore
         onChange(checked: boolean) {
           record.pendingStatus = true;
           const newStatus = checked ? 1 : 0;
@@ -52,30 +40,13 @@ export const columns: BasicColumn[] = [
       });
     },
   },
-  {
-    title: '创建时间',
-    dataIndex: 'createdAt',
-    width: 180,
-  },
-  {
-    title: '备注',
-    dataIndex: 'desc',
-  },
+  { title: '创建时间', dataIndex: 'createdAt' },
+  { title: '备注', dataIndex: 'desc' },
 ];
 
 export const searchFormSchema: FormSchema[] = [
-  {
-    field: 'name__like',
-    label: '角色名称',
-    component: 'Input',
-    colProps: { span: 5 },
-  },
-  {
-    field: 'code',
-    label: '角色编码',
-    component: 'Input',
-    colProps: { span: 5 },
-  },
+  { field: 'name__like', label: '角色名称', component: 'Input', colProps: { span: 5 } },
+  { field: 'code', label: '角色编码', component: 'Input', colProps: { span: 5 } },
   {
     field: 'status',
     label: '状态',
@@ -86,7 +57,7 @@ export const searchFormSchema: FormSchema[] = [
         { label: '停用', value: '0' },
       ],
     },
-    colProps: { span: 4 },
+    colProps: { span: 5 },
   },
 ];
 
@@ -98,13 +69,13 @@ export const formSchema: FormSchema[] = [
     component: 'Input',
     colProps: { span: 12 },
   },
-  {
-    field: 'code',
-    label: '角色编码',
-    required: true,
-    component: 'Input',
-    colProps: { span: 12 },
-  },
+  // {
+  //   field: 'code',
+  //   label: '角色编码',
+  //   required: true,
+  //   component: 'Input',
+  //   colProps: { span: 12 },
+  // },
   {
     field: 'ordinal',
     label: '顺序',

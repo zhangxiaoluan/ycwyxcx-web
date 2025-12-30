@@ -7,7 +7,6 @@ export const columns: BasicColumn[] = [
   { title: '名称', dataIndex: 'name' },
   { title: '图片', dataIndex: 'icon' },
   { title: '页面地址', dataIndex: 'url' },
-  { title: '按钮渐变色', dataIndex: 'style' },
   { title: '所在模块', dataIndex: 'moduleName' },
   { title: '所在分组', dataIndex: 'inGroup' },
 ];
