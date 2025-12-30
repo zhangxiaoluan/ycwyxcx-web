@@ -1,7 +1,7 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
 import { h } from 'vue';
 import { Switch } from 'ant-design-vue';
-import { setRoleStatus } from '@/api/sys/role';
+import { /*rolePermission,*/ setRoleStatus } from '@/api/sys/role';
 import { useMessage } from '@/hooks/web/useMessage';
 
 export const columns: BasicColumn[] = [
@@ -33,6 +33,7 @@ export const columns: BasicColumn[] = [
         checkedChildren: '已启用',
         unCheckedChildren: '已禁用',
         loading: record.pendingStatus,
+        // @ts-ignore
         onChange(checked: boolean) {
           record.pendingStatus = true;
           const newStatus = checked ? 1 : 0;
@@ -68,13 +69,13 @@ export const searchFormSchema: FormSchema[] = [
     field: 'name__like',
     label: '角色名称',
     component: 'Input',
-    colProps: { span: 5 },
+    colProps: { span: 4 },
   },
   {
     field: 'code',
     label: '角色编码',
     component: 'Input',
-    colProps: { span: 5 },
+    colProps: { span: 4 },
   },
   {
     field: 'status',
@@ -96,28 +97,40 @@ export const formSchema: FormSchema[] = [
     label: '角色名称',
     required: true,
     component: 'Input',
-    colProps: { span: 12 },
+    colProps: { span: 24 },
   },
   {
     field: 'code',
     label: '角色编码',
     required: true,
     component: 'Input',
-    colProps: { span: 12 },
+    colProps: { span: 24 },
   },
+  // {
+  //   field: 'permissions',
+  //   label: '数据权限',
+  //   required: true,
+  //   component: 'ApiSelect',
+  //   componentProps: {
+  //     api: rolePermission,
+  //     valueField: 'id',
+  //     labelField: 'name',
+  //     mode: 'multiple',
+  //   },
+  // },
   {
     field: 'ordinal',
     label: '顺序',
     required: false,
-    colProps: { span: 12 },
     component: 'InputNumber',
+    colProps: { span: 24 },
   },
   {
     field: 'status',
     label: '状态',
     component: 'RadioButtonGroup',
     defaultValue: 1,
-    colProps: { span: 12 },
+    colProps: { span: 24 },
     componentProps: {
       options: [
         { label: '启用', value: 1 },
@@ -128,23 +141,14 @@ export const formSchema: FormSchema[] = [
   {
     label: '备注',
     field: 'desc',
-    component: 'InputTextArea',
     colProps: { span: 24 },
+    component: 'InputTextArea',
   },
   {
-    label: '',
-    field: 'frontMenu',
-    slot: 'frontMenuSlot',
-    // component: 'Input',
-    defaultValue: [],
-    colProps: { span: 11, offset: 1 },
-  },
-  {
-    label: '',
+    label: ' ',
     field: 'menus',
-    slot: 'menusSlot',
-    // component: 'Input',
-    defaultValue: [],
-    colProps: { span: 11, offset: 1 },
+    colProps: { span: 24 },
+    colSlot: 'menus',
+    component: 'Input',
   },
 ];

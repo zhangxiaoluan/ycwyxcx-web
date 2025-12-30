@@ -2,10 +2,10 @@
   <div class="p-4">
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 添加 </a-button>
-        <Tooltip title="导出所有数据" class="export-icon">
-          <UploadOutlined :style="{ fontSize: '15pt' }" @click="handleExport" />
-        </Tooltip>
+        <!--        <a-button type="primary" @click="handleCreate"> 添加 </a-button>-->
+        <!--        <Tooltip title="导出所有数据" class="export-icon">-->
+        <!--          <UploadOutlined :style="{ fontSize: '15pt' }" @click="handleExport" />-->
+        <!--        </Tooltip>-->
       </template>
 
       <template #bodyCell="{ column, record }">
@@ -24,19 +24,8 @@
           <TableAction
             :actions="[
               {
-                icon: 'clarity:note-edit-line',
-                label: '编辑',
+                label: '去配单',
                 onClick: handleEdit.bind(null, record),
-              },
-              {
-                icon: 'ant-design:sync-outlined',
-                label: '密码重置',
-                color: 'warning',
-                popConfirm: {
-                  title: '是否重置密码？',
-                  placement: 'left',
-                  confirm: restPas.bind(null, record),
-                },
               },
             ]"
           />
@@ -49,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-  import { Tooltip, Tag, message } from 'ant-design-vue';
+  import { Tooltip, Tag } from 'ant-design-vue';
   import { UploadOutlined } from '@ant-design/icons-vue';
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { useDrawer } from '@/components/Drawer';
@@ -92,25 +81,6 @@
       record,
       isUpdate: true,
     });
-  }
-
-  // 删除
-  // function handleDelete(record: Recordable) {
-  //   remove(record.id);
-  //   reload();
-  // }
-
-  // 重置密码
-  const restPas = (pas) => {
-    resetPasswd(pas.userId).then((res) => {
-      if (res) {
-        message.success('密码重置成功');
-      }
-    });
-  };
-
-  function handleExport() {
-    window.location.href = exportExcel();
   }
 
   function handleSuccess() {

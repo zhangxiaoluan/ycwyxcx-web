@@ -9,6 +9,7 @@ enum Api {
   ALL_ROLES = '/system/role/all',
   SetRoleStatusApi = '/system/role/status',
   rolePermission = '/system/role/permission',
+  frontMenu = '/system/front/menu/list',
 }
 
 /**
@@ -119,4 +120,9 @@ export function roleMenus(roleId, mode: ErrorMessageMode = 'modal') {
       errorMessageMode: mode,
     },
   );
+}
+
+// 前台用户菜单
+export function frontMenu(mode: ErrorMessageMode = 'modal') {
+  return defHttp.get<any>({ url: Api.frontMenu }, { errorMessageMode: mode });
 }
