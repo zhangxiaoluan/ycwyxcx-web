@@ -15,6 +15,11 @@
                 onClick: handleEdit.bind(null, record),
               },
               {
+                icon: 'ant-design:qrcode-outlined',
+                label: '付款码',
+                onClick: handleCode.bind(null, record),
+              },
+              {
                 icon: 'ant-design:delete-outlined',
                 label: '删除',
                 color: 'error',
@@ -31,19 +36,44 @@
     </BasicTable>
 
     <FormDrawer @register="registerDrawer" @success="handleSuccess" />
+
+    <BasicModal v-bind="$attrs" @register="registerBasicModal" @ok="okBasicModal">
+      <QRCode
+        ref="qrRef"
+        :value="qrCodeUrl"
+        style="margin: 0 auto"
+        :size="200"
+        :status="codeLoading"
+        @refresh="refreshCode"
+      />
+    </BasicModal>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { nextTick, ref } from 'vue';
+  import { QRCode } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { useDrawer } from '@/components/Drawer';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { downloadByBase64 } from '@/utils/file/download';
   import FormDrawer from './FormDrawer.vue';
   import { columns } from './data';
-  import { merchantDel, merchantPage } from '@/api/Page/shop';
+  import { createRr, merchantDel, merchantPage } from '@/api/Page/shop';
 
   import { useMessage } from '@/hooks/web/useMessage';
 
   const { createMessage } = useMessage();
+
+  const qrRef = ref<any>(null);
+
+  const qrCodeUrl = ref('');
+
+  const codeLoading = ref<any>('active');
+
+  const tableRecord = ref<any>({});
+
+  const [registerBasicModal, { setModalProps }] = useModalInner();
 
   const [registerDrawer, { openDrawer }] = useDrawer();
 
@@ -64,6 +94,7 @@
       dataIndex: 'action',
       // slots: { customRender: 'action' },
       fixed: 'right',
+      width: 230,
     },
   });
 
@@ -90,6 +121,35 @@
         reload();
       }
     });
+  };
+
+  // 生成二维码
+  const handleCode = (record: Recordable) => {
+    tableRecord.value = record;
+    codeLoading.value = 'loading';
+    setModalProps({ open: true, title: record.name, canFullscreen: false, showOkBtn: false });
+    createRr({ merchantId: record.id })
+      .then((res) => {
+        setModalProps({ showOkBtn: true, okText: '下载二维码' });
+        codeLoading.value = 'active';
+        console.log(res);
+      })
+      .catch((err) => {
+        codeLoading.value = 'expired';
+        nextTick(() => {
+          let expired: any = document.getElementsByClassName('ant-qrcode-expired');
+          expired[0].innerText = err.message || '二维码生成失败';
+        });
+      });
+  };
+
+  // 刷新二维码
+  const refreshCode = () => handleCode(tableRecord.value);
+
+  // 下载二维码
+  const okBasicModal = () => {
+    const url = qrRef.value.toDataURL();
+    downloadByBase64(url, tableRecord.value.name + '付款码.png');
   };
 
   function handleSuccess() {

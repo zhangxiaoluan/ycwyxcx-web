@@ -8,6 +8,7 @@ enum Api {
   merchantDetail = `/convenient/merchant/detail`,
   merchantDel = `/convenient/merchant/delete`,
   merchantType = `/convenient/merchant/category/all`,
+  createRr = `/payment/qr/create`,
 
   // 商品
   productList = `/points/mall/product/list`,
@@ -46,6 +47,12 @@ export function merchantDel(id) {
 export function merchantType(params) {
   return defHttp.post({ url: Api.merchantType, params: params }, { errorMessageMode: 'message' });
 }
+
+export function createRr(params) {
+  return defHttp.post({ url: Api.createRr, params: params }, { errorMessageMode: 'message' });
+}
+
+
 
 // 列表
 export function productList(params) {
