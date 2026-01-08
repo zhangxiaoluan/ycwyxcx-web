@@ -15,6 +15,11 @@
                 onClick: handleEdit.bind(null, record),
               },
               {
+                icon: 'ant-design:qrcode-outlined',
+                label: '付款码',
+                onClick: handleCode.bind(null, record),
+              },
+              {
                 icon: 'ant-design:delete-outlined',
                 label: '删除',
                 color: 'error',
@@ -31,25 +36,41 @@
     </BasicTable>
 
     <FormDrawer @register="registerDrawer" @success="handleSuccess" />
+
+    <BasicModal v-bind="$attrs" @register="registerBasicModal" @ok="okBasicModal">
+      <div style="text-align: center">
+        <Image :src="qrCodeUrl" :height="200" />
+      </div>
+    </BasicModal>
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { ref } from 'vue';
+  import { Image } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { useDrawer } from '@/components/Drawer';
+  import { BasicModal, useModalInner } from '@/components/Modal';
+  import { downloadByUrl } from '@/utils/file/download';
   import FormDrawer from './FormDrawer.vue';
   import { columns } from './data';
-  import { merchantDel, merchantPage } from '@/api/Page/shop';
+  import { merchantInPage, createRr, merchantInDel } from '@/api/Page/shop';
 
   import { useMessage } from '@/hooks/web/useMessage';
 
   const { createMessage } = useMessage();
 
+  const qrCodeUrl = ref('');
+
+  const tableRecord = ref<any>({});
+
+  const [registerBasicModal, { setModalProps }] = useModalInner();
+
   const [registerDrawer, { openDrawer }] = useDrawer();
 
   const [registerTable, { reload }] = useTable({
     title: '商户列表',
-    api: merchantPage,
+    api: merchantInPage,
     columns,
     isTreeTable: false,
     pagination: true,
@@ -64,7 +85,7 @@
       dataIndex: 'action',
       // slots: { customRender: 'action' },
       fixed: 'right',
-      width: 150,
+      width: 230,
     },
   });
 
@@ -85,11 +106,37 @@
 
   // 删除
   const restPas = (record: Recordable) => {
-    merchantDel(record.id).then((res) => {
+    merchantInDel(record.id).then((res) => {
       if (res) {
         createMessage.success('成功');
         reload();
       }
+    });
+  };
+
+  // 生成二维码
+  const handleCode = (record: Recordable) => {
+    tableRecord.value = record;
+    let status = record.status || 0;
+    setModalProps({ open: true, title: record.name, canFullscreen: false, showOkBtn: false });
+    console.log(11, record);
+    if (status == 1) {
+      setModalProps({ showOkBtn: true, okText: '下载二维码' });
+      return (qrCodeUrl.value = record.qrCodeUrl);
+    }
+    createRr({ merchantId: record.merchantId })
+      .then((res) => {
+        setModalProps({ showOkBtn: true, okText: '下载二维码' });
+        qrCodeUrl.value = res.qrCodeUrl || '';
+      })
+      .catch(() => {});
+  };
+
+  // 下载二维码
+  const okBasicModal = () => {
+    downloadByUrl({
+      url: qrCodeUrl.value,
+      fileName: tableRecord.value.name + '码.png',
     });
   };
 

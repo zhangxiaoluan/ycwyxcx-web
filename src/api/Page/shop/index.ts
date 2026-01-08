@@ -9,6 +9,8 @@ enum Api {
   merchantDel = `/convenient/merchant/delete`,
   merchantType = `/convenient/merchant/category/all`,
   createRr = `/payment/qr/create`,
+  merchantInAdd = `/payment/merchant`,
+  merchantInPage = `/payment/merchant/page`,
 
   // 商品
   productList = `/points/mall/product/list`,
@@ -26,6 +28,22 @@ enum Api {
 // 列表
 export function merchantPage(params) {
   return defHttp.post({ url: Api.merchantPage, params: params }, { errorMessageMode: 'message' });
+}
+
+export function merchantInAdd(params) {
+  return defHttp.post({ url: Api.merchantInAdd, params: params }, { errorMessageMode: 'message' });
+}
+
+export function merchantInEdit(params) {
+  return defHttp.put({ url: Api.merchantInAdd, params: params }, { errorMessageMode: 'message' });
+}
+
+export function merchantInDel(id) {
+  return defHttp.delete({ url: Api.merchantInAdd + '/' + id }, { errorMessageMode: 'message' });
+}
+
+export function merchantInPage(params) {
+  return defHttp.get({ url: Api.merchantInPage, params: params }, { errorMessageMode: 'message' });
 }
 
 export function merchantAdd(params) {
@@ -51,8 +69,6 @@ export function merchantType(params) {
 export function createRr(params) {
   return defHttp.post({ url: Api.createRr, params: params }, { errorMessageMode: 'message' });
 }
-
-
 
 // 列表
 export function productList(params) {
