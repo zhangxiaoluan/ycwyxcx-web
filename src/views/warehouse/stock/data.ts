@@ -1,12 +1,13 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
+// import { getProductList } from '@/api/warehouse/product';
 
 export const columns: BasicColumn[] = [
   { title: '商品名称', dataIndex: 'productName', fixed: 'left' },
-  { title: '类型', dataIndex: 'type', width: 80 },
-  { title: '数量', dataIndex: 'quantity', width: 80 },
-  { title: '操作人', dataIndex: 'operator', width: 100 },
+  { title: '类型', dataIndex: 'type' },
+  { title: '数量', dataIndex: 'quantity' },
+  // { title: '操作人', dataIndex: 'operator', width: 100 },
   { title: '备注', dataIndex: 'remark', ellipsis: true },
-  { title: '操作时间', dataIndex: 'createdAt', width: 170 },
+  { title: '操作时间', dataIndex: 'createdAt' },
 ];
 
 export const searchFormSchema: FormSchema[] = [
@@ -27,20 +28,14 @@ export const searchFormSchema: FormSchema[] = [
   },
 ];
 
+// const baseColProps = { xxl: 12, lg: 12, sm: 24, xs: 24 };
 export const stockFormSchema: FormSchema[] = [
   {
     field: 'productId',
     label: '商品',
-    component: 'ApiSelect',
+    component: 'Select',
     required: true,
     colProps: { span: 24 },
-    componentProps: {
-      api: null,
-      resultField: 'result',
-      labelField: 'name',
-      valueField: 'id',
-      immediate: true,
-    },
   },
   {
     field: 'quantity',
@@ -50,13 +45,13 @@ export const stockFormSchema: FormSchema[] = [
     colProps: { span: 24 },
     componentProps: { min: 1, style: { width: '100%' } },
   },
-  {
-    field: 'operator',
-    label: '操作人',
-    component: 'Input',
-    required: true,
-    colProps: { span: 24 },
-  },
+  // {
+  //   field: 'operator',
+  //   label: '操作人',
+  //   component: 'Input',
+  //   required: true,
+  //   colProps: { span: 24 },
+  // },
   {
     field: 'remark',
     label: '备注',

@@ -1,12 +1,13 @@
 <template>
-  <div class="flex p-4">
-    <div class="mr-3 w-1/4 min-w-[250px]">
+  <div class="flex p-4 warehouse-product">
+    <div class="mr-3 w-1/5 min-w-[200px]">
       <BasicTree
         title="组织机构"
         :tree-data="treeData"
         :field-names="{ title: 'name', key: 'id', children: 'children' }"
         :default-expand-all="true"
         :selected-keys="selectedKeys"
+        ref="BasicTreeRef"
         search
         @select="onTreeSelect"
       />
@@ -63,20 +64,24 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, unref } from 'vue';
   import { Tag, message } from 'ant-design-vue';
   import { BasicTree } from '@/components/Tree';
   import { BasicTable, useTable, TableAction } from '@/components/Table';
   import { getProductPage, deleteProduct } from '@/api/warehouse/product';
   import { useDrawer } from '@/components/Drawer';
   import { orgList } from '@/api/sys/org';
-  import { three } from '@/utils/three';
+  import { closeParent, three } from '@/utils/three';
   import ProductDrawer from './ProductDrawer.vue';
   import { columns, searchFormSchema } from './data';
 
   const treeData = ref<any[]>([]);
+
   const selectedKeys = ref<string[]>([]);
+
   const currentOrgId = ref<string | undefined>(undefined);
+
+  const BasicTreeRef = ref<any>(null);
 
   const [registerDrawer, { openDrawer }] = useDrawer();
 
@@ -93,11 +98,13 @@
     striped: true,
     useSearchForm: true,
     formConfig: {
+      labelWidth: 80,
       schemas: searchFormSchema,
+      baseColProps: { xxl: 6, lg: 12, sm: 24, xs: 24 },
     },
     showTableSetting: true,
     bordered: true,
-    showIndexColumn: true,
+    showIndexColumn: false,
     canResize: false,
     actionColumn: {
       title: '操作',
@@ -107,10 +114,27 @@
     },
   });
 
-  onMounted(async () => {
-    const res = await orgList({});
-    treeData.value = three(res);
+  onMounted(() => {
+    handleOrgList();
   });
+
+  // 处理组织树
+  const handleOrgList = async () => {
+    const res = await orgList({});
+    const data = three(res);
+    closeParent(data);
+    treeData.value = data;
+    // 获取第一个叶子节点（递归查找没有子节点的节点）
+    let targetNode = data[0] as any;
+    while (targetNode?.children?.length > 0) {
+      targetNode = targetNode.children[0];
+    }
+    const self = [targetNode?.id];
+    selectedKeys.value = self;
+    currentOrgId.value = self[0];
+    await reload();
+    unref(BasicTreeRef).expandAll(true);
+  };
 
   function onTreeSelect(keys: string[]) {
     selectedKeys.value = keys;
@@ -129,10 +153,21 @@
   async function handleDelete(record: Recordable) {
     await deleteProduct(record.id);
     message.success('删除成功');
-    reload();
+    await reload();
   }
 
   function handleSuccess() {
     reload();
   }
 </script>
+
+<style scoped lang="less">
+  .warehouse-product {
+    :deep .ant-tree {
+      padding: 10px;
+    }
+    .vben-basic-table {
+      padding: 0;
+    }
+  }
+</style>

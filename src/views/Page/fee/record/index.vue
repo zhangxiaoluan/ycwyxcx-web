@@ -2,8 +2,9 @@
   <div>
     <BasicTable @register="registerTable">
       <template #toolbar>
-        <a-button type="primary" @click="handleCreate"> 添加部门 </a-button>
+        <a-button type="primary" @click="handleCreate">新增缴费记录</a-button>
       </template>
+
       <template #bodyCell="{ column, record }">
         <template v-if="column.key === 'action'">
           <TableAction
@@ -15,10 +16,10 @@
               },
               {
                 icon: 'ant-design:delete-outlined',
-                color: 'error',
                 label: '删除',
+                color: 'error',
                 popConfirm: {
-                  title: '是否确认删除',
+                  title: '是否确认删除？',
                   placement: 'left',
                   confirm: handleDelete.bind(null, record),
                 },
@@ -28,71 +29,61 @@
         </template>
       </template>
     </BasicTable>
-    <OrgDrawer @register="registerDrawer" @success="handleSuccess" />
+
+    <RecordDrawer @register="registerDrawer" @success="handleSuccess" />
   </div>
 </template>
 
 <script lang="ts" setup>
+  import { message } from 'ant-design-vue';
   import { BasicTable, useTable, TableAction } from '@/components/Table';
-  import { orgList, deleteOrg } from '@/api/sys/org';
+  import { getFeeRecordPage, deleteFeeRecord } from '@/api/fee/record';
   import { useDrawer } from '@/components/Drawer';
-  import OrgDrawer from './OrgDrawer.vue';
-  import { columns, searchFormSchema } from './org.data';
-  import { three } from '@/utils/three';
+  import RecordDrawer from './RecordDrawer.vue';
+  import { columns, searchFormSchema } from './data';
 
   const [registerDrawer, { openDrawer }] = useDrawer();
 
   const [registerTable, { reload }] = useTable({
-    title: '组织机构列表',
-    api: (e) => {
-      return new Promise((resolve) => {
-        orgList(e).then((res) => {
-          resolve(three(res));
-        });
-      });
-    },
+    title: '缴费记录管理',
+    api: getFeeRecordPage,
     columns,
-    formConfig: {
-      labelWidth: 50,
-      schemas: searchFormSchema,
-    },
-    isTreeTable: true,
-    useSearchForm: true,
-    showTableSetting: true,
-    bordered: true,
-    showIndexColumn: false,
     pagination: true,
     striped: true,
+    useSearchForm: true,
+    formConfig: {
+      labelWidth: 80,
+      schemas: searchFormSchema,
+      baseColProps: { xxl: 6, lg: 12, sm: 24, xs: 24 },
+    },
+    showTableSetting: true,
+    bordered: true,
+    showIndexColumn: true,
     canResize: false,
     actionColumn: {
-      width: 80,
       title: '操作',
       dataIndex: 'action',
-      fixed: undefined,
+      fixed: 'right',
+      width: 180,
     },
   });
 
-  const handleCreate = () => {
+  function handleCreate() {
     openDrawer(true, { isUpdate: false });
-  };
+  }
 
-  const handleEdit = (record) => {
-    openDrawer(true, {
-      record: { ...record },
-      isUpdate: true,
-    });
-  };
+  function handleEdit(record: Recordable) {
+    openDrawer(true, { record, isUpdate: true });
+  }
 
-  const handleDelete = (record) => {
-    deleteOrg(record.id).then(() => {
+  async function handleDelete(record: Recordable) {
+    deleteFeeRecord(record.id).then(() => {
+      message.success('删除成功');
       reload();
     });
-  };
+  }
 
-  const handleSuccess = () => {
-    console.log('drawer success');
+  function handleSuccess() {
     reload();
-  };
+  }
 </script>
-
-<style></style>

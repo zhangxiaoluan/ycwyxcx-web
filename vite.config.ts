@@ -18,7 +18,7 @@ export default defineApplicationConfig({
       port: 2811,
       proxy: {
         '/api': {
-          target: 'http://62.234.35.7:8801/api',
+          target: 'http://127.0.0.1:18801/api',
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(new RegExp(`^/api`), ''),
@@ -26,7 +26,7 @@ export default defineApplicationConfig({
           // secure: false
         },
         '/upload': {
-          target: 'http://62.234.35.7:8801/upload',
+          target: 'http://127.0.0.1:18801/upload',
           changeOrigin: true,
           ws: true,
           rewrite: (path) => path.replace(new RegExp(`^/upload`), ''),

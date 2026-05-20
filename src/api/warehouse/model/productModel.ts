@@ -11,6 +11,7 @@ export interface ProductRecord {
   communityId: number | string;
   name: string;
   category: string;
+  categoryName?: string;
   unit: string;
   stockQuantity: number;
   warningQuantity: number;
@@ -33,6 +34,7 @@ export interface ProductListItem {
   id: number;
   name: string;
   category: string;
+  categoryName?: string;
   unit: string;
   stockQuantity: number;
   status: number;

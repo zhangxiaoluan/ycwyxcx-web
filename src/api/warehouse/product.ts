@@ -22,8 +22,8 @@ export function getProductPage(params: ProductPageParams) {
   return defHttp.get<ProductPageResult>({ url: Api.page, params }, { errorMessageMode: 'message' });
 }
 
-export function getProductList(communityId: number | string) {
-  return defHttp.get<ProductListItem[]>({ url: Api.list, params: { communityId } }, { errorMessageMode: 'message' });
+export function getProductList(params) {
+  return defHttp.get<ProductListItem[]>({ url: Api.list, params }, { errorMessageMode: 'message' });
 }
 
 export function addProduct(params: ProductAddParams) {
@@ -39,9 +39,12 @@ export function deleteProduct(id: number | string) {
 }
 
 export function getProductDetail(id: number) {
-  return defHttp.get<ProductRecord>({ url: `${Api.detail}/${id}` }, { errorMessageMode: 'message' });
+  return defHttp.get<ProductRecord>(
+    { url: `${Api.detail}/${id}` },
+    { errorMessageMode: 'message' },
+  );
 }
 
-export function getWarningProducts(communityId: number | string) {
-  return defHttp.get<ProductListItem[]>({ url: Api.warning, params: { communityId } }, { errorMessageMode: 'message' });
+export function getWarningProducts() {
+  return defHttp.get<ProductListItem[]>({ url: Api.warning }, { errorMessageMode: 'message' });
 }

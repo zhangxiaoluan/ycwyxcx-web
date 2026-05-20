@@ -269,7 +269,7 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
           withToken: true,
           retryRequest: {
             isOpenRetry: true,
-            count: 5,
+            count: 1,
             waitTime: 100,
           },
         },

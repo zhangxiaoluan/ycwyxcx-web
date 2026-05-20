@@ -1,6 +1,6 @@
 <template>
-  <div class="flex p-4">
-    <div class="mr-3 w-1/4 min-w-[250px]">
+  <div class="flex p-4 warehouse-stock">
+    <div class="mr-3 w-1/5 min-w-[200px]">
       <BasicTree
         title="组织机构"
         :tree-data="treeData"
@@ -8,6 +8,7 @@
         :default-expand-all="true"
         :selected-keys="selectedKeys"
         search
+        ref="BasicTreeRef"
         @select="onTreeSelect"
       />
     </div>
@@ -18,9 +19,7 @@
           <a-button type="primary" @click="handleStockIn" :disabled="!currentOrgId">
             入库
           </a-button>
-          <a-button @click="handleStockOut" :disabled="!currentOrgId" class="ml-2">
-            出库
-          </a-button>
+          <a-button @click="handleStockOut" :disabled="!currentOrgId" class="ml-2"> 出库 </a-button>
         </template>
 
         <template #bodyCell="{ column, record }">
@@ -38,20 +37,24 @@
 </template>
 
 <script lang="ts" setup>
-  import { ref, onMounted } from 'vue';
+  import { ref, onMounted, unref } from 'vue';
   import { Tag } from 'ant-design-vue';
   import { BasicTree } from '@/components/Tree';
   import { BasicTable, useTable } from '@/components/Table';
   import { getStockRecordPage } from '@/api/warehouse/stock';
   import { useDrawer } from '@/components/Drawer';
   import { orgList } from '@/api/sys/org';
-  import { three } from '@/utils/three';
+  import { closeParent, three } from '@/utils/three';
   import StockDrawer from './StockDrawer.vue';
   import { columns, searchFormSchema } from './data';
 
   const treeData = ref<any[]>([]);
+
   const selectedKeys = ref<string[]>([]);
+
   const currentOrgId = ref<string | undefined>(undefined);
+
+  const BasicTreeRef = ref<any>(null);
 
   const [registerDrawer, { openDrawer }] = useDrawer();
 
@@ -68,29 +71,51 @@
     striped: true,
     useSearchForm: true,
     formConfig: {
+      labelWidth: 80,
       schemas: searchFormSchema,
+      baseColProps: { xxl: 6, lg: 12, sm: 24, xs: 24 },
     },
     showTableSetting: true,
     bordered: true,
-    showIndexColumn: true,
+    showIndexColumn: false,
     canResize: false,
   });
 
-  onMounted(async () => {
-    const res = await orgList({});
-    treeData.value = three(res);
+  onMounted(() => {
+    handleOrgList();
   });
 
+  // 处理组织树
+  const handleOrgList = async () => {
+    const res = await orgList({});
+    const data = three(res);
+    closeParent(data);
+    treeData.value = data;
+    // 获取第一个叶子节点（递归查找没有子节点的节点）
+    let targetNode = data[0] as any;
+    while (targetNode?.children?.length > 0) {
+      targetNode = targetNode.children[0];
+    }
+    const self = [targetNode?.id];
+    selectedKeys.value = self;
+    currentOrgId.value = self[0];
+    await reload();
+    unref(BasicTreeRef).expandAll(true);
+  };
+
+  // 选择组织树
   function onTreeSelect(keys: string[]) {
     selectedKeys.value = keys;
     currentOrgId.value = keys[0];
     reload();
   }
 
+  // 入库
   function handleStockIn() {
     openDrawer(true, { type: 1, communityId: currentOrgId.value });
   }
 
+  // 出库
   function handleStockOut() {
     openDrawer(true, { type: 2, communityId: currentOrgId.value });
   }
@@ -99,3 +124,14 @@
     reload();
   }
 </script>
+
+<style scoped lang="less">
+  .warehouse-stock {
+    :deep .ant-tree {
+      padding: 10px;
+    }
+    .vben-basic-table {
+      padding: 0;
+    }
+  }
+</style>

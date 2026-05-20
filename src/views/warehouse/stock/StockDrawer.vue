@@ -10,67 +10,83 @@
     <BasicForm @register="registerForm" />
   </BasicDrawer>
 </template>
-<script lang="ts">
-  import { defineComponent, ref } from 'vue';
+<script lang="ts" setup>
+  import { ref, unref } from 'vue';
   import { message } from 'ant-design-vue';
   import { BasicForm, useForm } from '@/components/Form/index';
   import { stockFormSchema } from './data';
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
   import { stockIn, stockOut } from '@/api/warehouse/stock';
   import { getProductList } from '@/api/warehouse/product';
+  // import { getProductList } from '@/api/warehouse/product';
 
-  export default defineComponent({
-    name: 'StockDrawer',
-    components: { BasicDrawer, BasicForm },
-    emits: ['success', 'register'],
-    setup(_, { emit }) {
-      const stockType = ref<1 | 2>(1);
-      const title = ref('入库');
-      const communityId = ref<string>();
+  const emit = defineEmits(['success', 'register']);
 
-      const [registerForm, { resetFields, updateSchema, validate }] = useForm({
-        labelWidth: 100,
-        schemas: stockFormSchema,
-        showActionButtonGroup: false,
-        baseColProps: { span: 24 },
-      });
+  const stockType = ref<1 | 2>(1);
+  const title = ref('入库');
+  const communityId = ref<string>();
 
-      const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
-        await resetFields();
-        setDrawerProps({ confirmLoading: false });
-        stockType.value = data.type;
-        title.value = data.type === 1 ? '入库' : '出库';
-        communityId.value = data.communityId;
+  const [registerForm, { resetFields, updateSchema, validate }] = useForm({
+    labelWidth: 80,
+    schemas: stockFormSchema,
+    showActionButtonGroup: false,
+    baseColProps: { span: 24 },
+  });
 
-        await updateSchema([
-          {
-            field: 'productId',
-            componentProps: {
-              api: () => getProductList(data.communityId),
-            },
-          },
-        ]);
-      });
+  const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
+    await resetFields();
+    setDrawerProps({ confirmLoading: false });
+    stockType.value = data.type;
+    title.value = data.type == 1 ? '入库' : '出库';
+    communityId.value = data.communityId;
+    await HandleProductList();
+  });
 
-      async function handleSubmit() {
-        try {
-          const values = await validate();
-          setDrawerProps({ confirmLoading: true });
-          if (stockType.value === 1) {
-            await stockIn(values);
-            message.success('入库成功');
-          } else {
-            await stockOut(values);
-            message.success('出库成功');
-          }
+  // 根据组织查询商品
+  const HandleProductList = async () => {
+    await updateSchema([
+      {
+        field: 'productId',
+        component: 'ApiSelect',
+        componentProps: {
+          api: getProductList,
+          resultField: 'result',
+          params: { communityId: communityId.value },
+          labelField: 'name',
+          valueField: 'id',
+          showSearch: true,
+        },
+      },
+    ]);
+  };
+
+  async function handleSubmit() {
+    const funApi = (api: any, other = {}) => {
+      setDrawerProps({ confirmLoading: true, loading: true });
+      api({ ...other, communityId: communityId.value })
+        .then(() => {
           closeDrawer();
           emit('success');
-        } finally {
-          setDrawerProps({ confirmLoading: false });
-        }
-      }
+        })
+        .catch(({ response }) => {
+          setDrawerProps({ confirmLoading: false, loading: false });
+          message.warn(response.data?.message || '系统异常请联系管理员');
+        });
+    };
+    try {
+      const values = await validate();
+      unref(stockType) === 1 ? funApi(stockIn, { ...values }) : funApi(stockOut, { ...values });
+    } finally {
+      setDrawerProps({ confirmLoading: false });
+    }
+  }
 
-      return { registerDrawer, registerForm, title, handleSubmit };
-    },
-  });
+  // export default defineComponent({
+  //   name: 'StockDrawer',
+  //   components: { BasicDrawer, BasicForm },
+  //   emits: ['success', 'register'],
+  //   setup(_, { emit }) {
+  //     return { registerDrawer, registerForm, title, handleSubmit };
+  //   },
+  // });
 </script>

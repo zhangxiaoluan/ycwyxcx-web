@@ -1,4 +1,6 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
+// import { orgList } from '@/api/sys/org';
+// import { three } from '@/utils/three';
 
 export const columns: BasicColumn[] = [
   { title: '名称', dataIndex: 'name', width: 200 },
@@ -58,7 +60,7 @@ export const columns: BasicColumn[] = [
 ];
 
 export const searchFormSchema: FormSchema[] = [
-  { field: 'name__like', label: '名称', component: 'Input', colProps: { span: 4 } },
+  { field: 'name', label: '名称', component: 'Input', colProps: { span: 4 } },
   { field: 'code', label: '编码', component: 'Input', colProps: { span: 4 } },
 ];
 
@@ -74,14 +76,19 @@ export const formSchema: FormSchema[] = [
     field: 'parentId',
     label: '上级部门',
     colProps: { span: 24 },
-    component: 'TreeSelect',
-    componentProps: {
-      fieldNames: {
-        label: 'name',
-        value: 'id',
-      },
-      getPopupContainer: () => document.body,
-    },
+    component: 'Select',
+    // componentProps: {
+    //   api: () => {
+    //     return new Promise((resolve) => {
+    //       orgList({}).then((res) => {
+    //         resolve(three(res));
+    //       });
+    //     });
+    //   },
+    //   labelField: 'name',
+    //   valueField: 'id',
+    //   getPopupContainer: () => document.body,
+    // },
   },
   {
     field: 'orgType',

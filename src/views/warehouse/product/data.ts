@@ -1,8 +1,9 @@
 import { BasicColumn, FormSchema } from '@/components/Table';
+import { dictItems } from '@/api/sys/dict';
 
 export const columns: BasicColumn[] = [
   { title: '商品名称', dataIndex: 'name', fixed: 'left' },
-  { title: '分类', dataIndex: 'category' },
+  { title: '分类', dataIndex: 'categoryName', width: 100 },
   { title: '单位', dataIndex: 'unit', width: 80 },
   { title: '库存数量', dataIndex: 'stockQuantity', width: 100 },
   { title: '预警数量', dataIndex: 'warningQuantity', width: 100 },
@@ -17,16 +18,15 @@ export const searchFormSchema: FormSchema[] = [
     field: 'name',
     label: '商品名称',
     component: 'Input',
-    colProps: { span: 8 },
   },
   {
     field: 'category',
     label: '分类',
     component: 'Input',
-    colProps: { span: 8 },
   },
 ];
 
+// const baseColProps = { xxl: 12, lg: 12, sm: 24, xs: 24 };
 export const formSchema: FormSchema[] = [
   {
     field: 'name',
@@ -38,9 +38,18 @@ export const formSchema: FormSchema[] = [
   {
     field: 'category',
     label: '分类',
-    component: 'Input',
+    component: 'ApiSelect',
     required: true,
     colProps: { span: 24 },
+    componentProps: {
+      api: dictItems,
+      params: { module: 'shop_type' },
+      getPopupContainer: () => document.body,
+      placeholder: '请选择分类',
+      labelField: 'label',
+      valueField: 'val',
+      showSearch: true,
+    },
   },
   {
     field: 'unit',

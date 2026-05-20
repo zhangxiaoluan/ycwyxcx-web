@@ -69,7 +69,12 @@
   watch(
     () => props.params,
     () => {
-      !unref(isFirstLoaded) && fetch();
+      // !unref(isFirstLoaded) && fetch();
+      if (props.immediate) {
+        fetch();
+      } else {
+        !unref(isFirstLoaded) && fetch();
+      }
     },
     { deep: true },
   );

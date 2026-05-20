@@ -17,6 +17,8 @@
   import { BasicDrawer, useDrawerInner } from '@/components/Drawer';
   import { formSchema } from './org.data';
   import { updateOrg, saveOrg, orgList } from '@/api/sys/org';
+  import { three } from '@/utils/three';
+  import { buildUUID } from '@/utils/uuid';
 
   const isUpdate = ref(true);
 
@@ -32,41 +34,55 @@
 
   const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
     await resetFields();
-    await setDrawerProps({ confirmLoading: false });
+    setDrawerProps({ confirmLoading: false });
     isUpdate.value = !!data?.isUpdate;
+    const record = data.record || {};
+    console.log(11, record);
 
-    console.log('=====>', data);
-    if (isUpdate.value) {
-      selfId.value = data.record.id;
-    }
-
-    if (unref(isUpdate)) {
-      await setFieldsValue({
-        ...data.record,
-      });
-    }
-
-    let treeData = rebuildTree(await orgList());
     await updateSchema({
       field: 'parentId',
-      componentProps: { treeData },
+      component: 'ApiTreeSelect',
+      componentProps: {
+        params: { time: new Date() },
+        api: getOrgList,
+        labelField: 'name',
+        valueField: 'id',
+        getPopupContainer: () => document.body,
+      },
     });
+
+    if (unref(isUpdate)) {
+      selfId.value = record.id;
+      await setFieldsValue({
+        ...record,
+        parentId: record.parentId == '1' ? null : record.parentId,
+      });
+    }
   });
+
+  // 组织树
+  const getOrgList = () => {
+    return new Promise((resolve) => {
+      orgList({}).then((res) => {
+        resolve(three(res));
+      });
+    });
+  };
 
   const getTitle = computed(() => (!unref(isUpdate) ? '新增组织机构' : '编辑组织机构'));
 
-  const rebuildTree = (data) => {
-    let result = [];
-    data.forEach((it) => {
-      let obj = { ...it.self };
-      if (it.children) {
-        obj.children = rebuildTree(it.children);
-      }
-      result.push(obj);
-    });
-
-    return result;
-  };
+  // const rebuildTree = (data) => {
+  //   let result = [];
+  //   data.forEach((it) => {
+  //     let obj = { ...it.self };
+  //     if (it.children) {
+  //       obj.children = rebuildTree(it.children);
+  //     }
+  //     result.push(obj);
+  //   });
+  //
+  //   return result;
+  // };
 
   const handleSubmit = async () => {
     try {

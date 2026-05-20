@@ -30,7 +30,7 @@
       const editId = ref();
 
       const [registerForm, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
-        labelWidth: 100,
+        labelWidth: 110,
         schemas: addOrEditForm,
         showActionButtonGroup: false,
         actionColOptions: {

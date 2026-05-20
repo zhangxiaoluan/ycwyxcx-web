@@ -10,9 +10,33 @@ export const columns: BasicColumn[] = [
 // @ts-ignore
 export const addOrEditForm: FormSchema[] = [
   {
+    field: 'label',
+    component: 'Input',
+    label: '字典名称',
+    colProps: { span: 24 },
+    required: true,
+    componentProps: {
+      maxlength: 25,
+    },
+  },
+  {
+    field: 'parentId',
+    label: '上级参数',
+    component: 'TreeSelect',
+    colProps: { span: 24 },
+    componentProps: {
+      fieldNames: {
+        label: 'label',
+        value: 'id',
+        // key: 'id',
+      },
+    },
+  },
+  {
     field: 'module',
     component: 'Input',
     label: '字典模块',
+    helpMessage: '查询同一模块下所有数据',
     colProps: { span: 24 },
     required: true,
     componentProps: {
@@ -49,16 +73,6 @@ export const addOrEditForm: FormSchema[] = [
     },
   },
   {
-    field: 'label',
-    component: 'Input',
-    label: '字典名称',
-    colProps: { span: 24 },
-    required: true,
-    componentProps: {
-      maxlength: 25,
-    },
-  },
-  {
     field: 'note',
     component: 'Input',
     label: '字典备注',
@@ -66,19 +80,6 @@ export const addOrEditForm: FormSchema[] = [
     required: false,
     componentProps: {
       maxlength: 30,
-    },
-  },
-  {
-    field: 'parentId',
-    label: '上级参数',
-    component: 'TreeSelect',
-    colProps: { span: 24 },
-    componentProps: {
-      fieldNames: {
-        label: 'label',
-        value: 'id',
-        // key: 'id',
-      },
     },
   },
 ];
