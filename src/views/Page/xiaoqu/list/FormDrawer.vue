@@ -18,6 +18,7 @@
   import { xiaoquAdd, xiaoquEdit } from '@/api/Page/xiaoqu';
   import { useMessage } from '@/hooks/web/useMessage';
   import { buildUUID } from '@/utils/uuid';
+  import { orgList } from '@/api/sys/org';
 
   let emit = defineEmits(['register', 'success']);
 
@@ -27,7 +28,7 @@
 
   const selfId = ref({});
 
-  const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
+  const [registerForm, { resetFields, setFieldsValue, validate, updateSchema }] = useForm({
     labelWidth: 100,
     schemas: formSchema,
     showActionButtonGroup: false,
@@ -47,9 +48,23 @@
         let record = data.record || {};
         selfId.value = record.id;
 
-        // 设置表单的值
+        // 如果有关联的组织节点，查找其parentId作为树选择的值
+        let parentId = null;
+        if (record.orgId) {
+          try {
+            const orgs = await orgList({});
+            const orgNode = findOrgById(orgs, record.orgId);
+            if (orgNode) {
+              parentId = orgNode.parentId || orgNode.parent_id;
+            }
+          } catch (e) {
+            console.warn('获取组织信息失败', e);
+          }
+        }
+
         await setFieldsValue({
           ...record,
+          parentId: parentId,
         });
         setDrawerProps({ loading: false });
       } else {
@@ -57,6 +72,18 @@
       }
     },
   );
+
+  function findOrgById(orgs: any[], id: any): any {
+    for (const org of orgs) {
+      const self = org.self || org;
+      if (String(self.id) === String(id)) return self;
+      if (org.children) {
+        const found = findOrgById(org.children, id);
+        if (found) return found;
+      }
+    }
+    return null;
+  }
 
   const getTitle = computed(() => (!unref(isUpdate) ? '新增' : '编辑'));
 

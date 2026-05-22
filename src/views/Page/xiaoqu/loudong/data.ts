@@ -8,10 +8,9 @@ type CheckedType = boolean | string | number;
 
 export const columns: BasicColumn[] = [
   {
-    title: '多少栋',
+    title: '楼栋编号',
     dataIndex: 'name',
     fixed: 'left',
-    format: (text) => text + '栋',
   },
   { title: '描述', dataIndex: 'description' },
   {
@@ -50,8 +49,8 @@ export const columns: BasicColumn[] = [
 export const formSchema: FormSchema[] = [
   {
     field: 'name',
-    label: '多少栋',
-    component: 'InputNumber',
+    label: '楼栋编号',
+    component: 'Input',
     required: true,
     colProps: { span: 24 },
   },

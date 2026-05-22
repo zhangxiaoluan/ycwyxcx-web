@@ -19,6 +19,7 @@
   import { addDevice, updateDevice } from '@/api/device/device';
 
   const isUpdate = ref(true);
+  const communityId = ref<string>();
 
   const getTitle = computed(() => (!unref(isUpdate) ? '新增设备' : '编辑设备'));
 
@@ -37,6 +38,7 @@
     await resetFields();
     setDrawerProps({ confirmLoading: false, loading: false });
     isUpdate.value = !!data?.isUpdate;
+    communityId.value = data?.communityId;
 
     if (unref(isUpdate)) {
       recordId.value = data.record.id;
@@ -61,7 +63,7 @@
       const values = await validate();
       unref(isUpdate)
         ? funApi(updateDevice, { id: unref(recordId)!, ...values })
-        : funApi(addDevice, { ...values });
+        : funApi(addDevice, { communityId: unref(communityId), ...values });
     } finally {
       setDrawerProps({ confirmLoading: false });
     }

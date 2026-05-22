@@ -25,6 +25,7 @@
     setup(_, { emit }) {
       const isUpdate = ref(true);
       const recordId = ref<string>();
+      const communityId = ref<string>();
 
       const [registerForm, { resetFields, setFieldsValue, validate }] = useForm({
         labelWidth: 100,
@@ -37,6 +38,7 @@
         await resetFields();
         setDrawerProps({ confirmLoading: false });
         isUpdate.value = !!data?.isUpdate;
+        communityId.value = data?.communityId;
 
         if (unref(isUpdate)) {
           recordId.value = data.record.id;
@@ -54,7 +56,7 @@
             await updateFeeRecord({ id: unref(recordId)!, ...values });
             message.success('修改成功');
           } else {
-            await addFeeRecord(values);
+            await addFeeRecord({ communityId: unref(communityId), ...values });
             message.success('添加成功');
           }
           closeDrawer();

@@ -3,6 +3,8 @@ import { Switch } from 'ant-design-vue';
 import { h } from 'vue';
 import { useMessage } from '@/hooks/web/useMessage';
 import { communityStatus } from '@/api/Page/community';
+import { orgList } from '@/api/sys/org';
+import { three } from '@/utils/three';
 
 type CheckedType = boolean | string | number;
 
@@ -12,7 +14,6 @@ export const columns: BasicColumn[] = [
   { title: '辖区', dataIndex: 'district' },
   { title: '开发商', dataIndex: 'developer' },
   { title: '建筑面积', dataIndex: 'buildArea' },
-  { title: '绿化面积', dataIndex: 'greenRate' },
   { title: '建筑物总数', dataIndex: 'totalBuildings' },
   { title: '总计单位', dataIndex: 'totalUnits' },
   { title: '停车位', dataIndex: 'parkingSpaces' },
@@ -52,6 +53,28 @@ export const columns: BasicColumn[] = [
 ];
 
 export const formSchema: FormSchema[] = [
+  {
+    field: 'parentId',
+    label: '所属组织',
+    component: 'ApiTreeSelect',
+    required: true,
+    colProps: { span: 24 },
+    componentProps: {
+      api: () => {
+        return new Promise((resolve) => {
+          orgList({}).then((res) => {
+            const treeData = three(res);
+            disableCommunityNodes(treeData);
+            resolve(treeData);
+          });
+        });
+      },
+      labelField: 'name',
+      valueField: 'id',
+      placeholder: '请选择父组织节点',
+      getPopupContainer: () => document.body,
+    },
+  },
   {
     field: 'name',
     label: '小区名称',
@@ -154,3 +177,16 @@ export const formSchema: FormSchema[] = [
   //   colProps: { span: 24 },
   // },
 ];
+
+// 禁用已绑定小区的组织叶子节点，只允许选择普通组织节点作为父节点
+function disableCommunityNodes(nodes: any[]) {
+  if (!nodes) return;
+  nodes.forEach((node) => {
+    if (node.communityId) {
+      node.disabled = true;
+    }
+    if (node.children) {
+      disableCommunityNodes(node.children);
+    }
+  });
+}
