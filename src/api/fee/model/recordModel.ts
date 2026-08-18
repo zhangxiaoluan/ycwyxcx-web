@@ -1,6 +1,7 @@
 export interface FeeRecordPageParams {
   current: number;
   size: number;
+  communityId?: number;
   feeType?: string;
   roomId?: number;
   startMonth?: string;
@@ -37,6 +38,7 @@ export interface FeeRecordPageResult {
 }
 
 export interface FeeRecordAddParams {
+  communityId?: number;
   buildingId?: number;
   roomId?: number;
   roomNumber?: string;

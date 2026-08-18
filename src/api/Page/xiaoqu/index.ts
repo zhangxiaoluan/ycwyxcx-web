@@ -22,6 +22,9 @@ enum Api {
   bindingList = `/property/binding/all`,
   bindingAudit = `/property/binding/audit`,
   bindingUnbind = `/property/binding/unbind`,
+
+  // 人员管理
+  communityUserPage = `/property/community-user/page`,
 }
 
 // 列表
@@ -98,4 +101,8 @@ export function bindingUnbind(params) {
     { url: Api.bindingUnbind + '/' + params.bindingId, params },
     { errorMessageMode: 'message' },
   );
+}
+
+export function communityUserPage(params) {
+  return defHttp.post({ url: Api.communityUserPage, params: params }, { errorMessageMode: 'message' });
 }
