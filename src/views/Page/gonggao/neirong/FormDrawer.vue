@@ -45,7 +45,13 @@
       selfId.value = record.id;
       console.log(record);
       // 设置表单的值
-      await setFieldsValue({ ...record });
+      const formValue = { ...record };
+      if (record.startTime || record.endTime) {
+        // 只取日期部分
+        const toDate = (v) => (v ? String(v).slice(0, 10) : null);
+        formValue.time = [toDate(record.startTime), toDate(record.endTime)];
+      }
+      await setFieldsValue(formValue);
     }
   });
 
@@ -57,6 +63,17 @@
       const values = await validate();
       setDrawerProps({ confirmLoading: true });
       let query = { ...values };
+
+      // 时间区间拆分为 startTime / endTime（补全时分秒满足后端格式）
+      if (Array.isArray(query.time)) {
+        const [start, end] = query.time;
+        query.startTime = start ? `${start} 00:00:00` : null;
+        query.endTime = end ? `${end} 23:59:59` : null;
+      }
+      delete query.time;
+
+      // 置顶开关转 0/1
+      query.isTop = query.isTop === 1 || query.isTop === true ? 1 : 0;
 
       unref(isUpdate) ? funApi(announcementEdit, { id: selfId.value }) : funApi(announcementAdd);
 

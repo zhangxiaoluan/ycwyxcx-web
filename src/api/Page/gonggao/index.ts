@@ -5,6 +5,8 @@ enum Api {
   announcementAdd = `/announcement/add`,
   announcementEdit = `/announcement/update`,
   announcementDel = `/announcement/delete`,
+  announcementPublish = `/announcement/publish`,
+  announcementWithdraw = `/announcement/withdraw`,
   categoryPage = `/announcement/category/page`,
   categoryAdd = `/announcement/category/add`,
   categoryEdit = `/announcement/category/update`,
@@ -43,6 +45,16 @@ export function announcementEdit(params) {
 // 删除
 export function announcementDel(id) {
   return defHttp.delete({ url: Api.announcementDel + '/' + id }, { errorMessageMode: 'message' });
+}
+
+// 发布公告
+export function announcementPublish(id) {
+  return defHttp.post({ url: Api.announcementPublish + '/' + id }, { errorMessageMode: 'message' });
+}
+
+// 撤回公告
+export function announcementWithdraw(id) {
+  return defHttp.post({ url: Api.announcementWithdraw + '/' + id }, { errorMessageMode: 'message' });
 }
 
 // 列表
