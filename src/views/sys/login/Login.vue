@@ -20,13 +20,16 @@
           <div class="my-auto">
             <img
               :alt="title"
-              src="../../../assets/svg/login-box-bg.svg"
+              src="../../../assets/svg/login-property.svg"
               class="w-1/2 -mt-16 -enter-x"
             />
-            <div class="mt-10 font-medium text-white -enter-x">
-              <span class="inline-block mt-4 text-3xl"> {{ t('sys.login.signInTitle') }}</span>
+            <div class="mt-10 -enter-x">
+              <span class="inline-block mt-4 login-title">
+                {{ t('sys.login.signInTitle') }}</span
+              >
             </div>
-            <div class="mt-5 font-normal text-white dark:text-gray-500 -enter-x">
+            <div class="login-divider -enter-x"></div>
+            <div class="mt-6 -enter-x login-desc">
               {{ t('sys.login.signInDesc') }}
             </div>
           </div>
@@ -34,13 +37,10 @@
         <div class="flex w-full h-full py-5 xl:h-auto xl:py-0 xl:my-0 xl:w-6/12">
           <div
             :class="`${prefixCls}-form`"
-            class="relative w-full px-5 py-8 mx-auto my-auto rounded-md shadow-md xl:ml-16 xl:bg-transparent sm:px-8 xl:p-4 xl:shadow-none sm:w-3/4 lg:w-2/4 xl:w-auto enter-x"
+            class="relative w-full px-5 py-8 mx-auto my-auto rounded-md shadow-lg xl:ml-16 xl:bg-white sm:px-8 xl:p-6 sm:w-3/4 lg:w-2/4 xl:w-auto enter-x"
           >
             <LoginForm />
             <ForgetPasswordForm />
-            <RegisterForm />
-            <MobileForm />
-            <QrCodeForm />
           </div>
         </div>
       </div>
@@ -56,9 +56,6 @@
   import { computed } from 'vue';
   import ForgetPasswordForm from './ForgetPasswordForm.vue';
   import LoginForm from './LoginForm.vue';
-  import MobileForm from './MobileForm.vue';
-  import QrCodeForm from './QrCodeForm.vue';
-  import RegisterForm from './RegisterForm.vue';
 
   defineProps({
     sessionTimeout: {
@@ -84,7 +81,24 @@
       background-color: @dark-bg;
 
       &::before {
-        background-image: url('@/assets/svg/login-bg-dark.svg');
+        display: none;
+      }
+
+      .login-title {
+        color: #fff;
+        background-image: linear-gradient(90deg, #ffffff 0%, #d3e0f7 55%, #a7c0ea 100%);
+      }
+
+      .login-divider {
+        background: linear-gradient(90deg, #ffffff 0%, #9db9e8 100%);
+      }
+
+      .login-desc {
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      .container .@{logo-prefix-cls}__title {
+        color: #fff;
       }
 
       .ant-input,
@@ -130,15 +144,46 @@
       left: 0;
       width: 100%;
       height: 100%;
-      margin-left: -48%;
-      background-image: url('@/assets/svg/login-bg.svg');
+      pointer-events: none;
+      background-image: url('@/assets/images/bg.png');
       background-repeat: no-repeat;
-      background-position: 100%;
-      background-size: auto 100%;
+      background-position: center center;
+      background-size: cover;
       /* stylelint-disable-next-line media-query-no-invalid */
       @media (max-width: @screen-xl) {
         display: none;
       }
+    }
+
+    .login-title {
+      font-family: 'HarmonyOS Sans SC', 'MiSans', 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft YaHei', sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      line-height: 1.2;
+      background-image: linear-gradient(90deg, #2c4a8c 0%, #4a6cb2 55%, #7195d8 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .login-divider {
+      width: 52px;
+      height: 4px;
+      margin-top: 20px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #3b5598 0%, #7ea2e0 100%);
+    }
+
+    .login-desc {
+      font-family: 'HarmonyOS Sans SC', 'MiSans', 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft YaHei', sans-serif;
+      font-size: 15px;
+      letter-spacing: 0.02em;
+      color: #5a6b8c;
+      line-height: 1.9;
+      white-space: pre-line;
     }
 
     .@{logo-prefix-cls} {
@@ -163,24 +208,12 @@
         height: 80px;
 
         &__title {
-          color: #fff;
+          color: #1f2d3d;
           font-size: 24px;
         }
 
         img {
           width: 48px;
-        }
-      }
-    }
-
-    &-sign-in-way {
-      .anticon {
-        color: #888;
-        font-size: 22px;
-        cursor: pointer;
-
-        &:hover {
-          color: @primary-color;
         }
       }
     }
