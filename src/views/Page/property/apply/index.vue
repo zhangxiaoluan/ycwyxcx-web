@@ -151,18 +151,54 @@
     return value ? String(value).replace('T', ' ').substring(0, 19) : '-';
   }
 
+  // 兼容后端可能返回数组或分页对象；ID 统一转成字符串，避免数字/字符串不一致导致下拉匹配不上
+  function normalizeRoleList(res: any): any[] {
+    if (Array.isArray(res)) return res;
+    if (Array.isArray(res?.records)) return res.records;
+    if (Array.isArray(res?.list)) return res.list;
+    if (Array.isArray(res?.result)) return res.result;
+    return [];
+  }
+
+  function toIdString(value: any) {
+    return value === undefined || value === null || value === '' ? undefined : String(value);
+  }
+
   function resetForm(record: Recordable) {
     form.status = 1;
     // 默认沿用申请人选择的角色，审核人可改为其他物业角色
-    form.finalRoleId = record.appliedRoleId || undefined;
+    form.finalRoleId = toIdString(record.appliedRoleId);
     form.reviewComment = '';
     form.rejectReason = '';
   }
 
   async function loadRoles() {
     if (roleOptions.value.length > 0) return;
-    const roles = await availablePropertyRoles();
-    roleOptions.value = (roles || []).map((role) => ({ label: role.name, value: role.id }));
+    try {
+      const roles = await availablePropertyRoles();
+      roleOptions.value = normalizeRoleList(roles)
+        .filter((role) => role && role.id !== undefined && role.id !== null)
+        .map((role) => ({
+          label: role.name || role.roleName || role.code || String(role.id),
+          value: String(role.id),
+        }));
+    } catch (e) {
+      message.error('获取可分配角色失败，请稍后重试');
+    }
+  }
+
+  // 如果申请的角色不在下拉列表中，补一条，保证选中值能显示角色名称而不是 ID
+  function ensureCurrentRoleInOptions(record: Recordable) {
+    const currentId = form.finalRoleId;
+    if (!currentId) return;
+    if (roleOptions.value.some((option) => option.value === currentId)) return;
+    roleOptions.value = [
+      ...roleOptions.value,
+      {
+        label: record.appliedRoleName || record.finalRoleName || String(currentId),
+        value: String(currentId),
+      },
+    ];
   }
 
   async function handleReview(record: Recordable) {
@@ -171,6 +207,7 @@
     isReviewMode.value = true;
     modalVisible.value = true;
     await loadRoles();
+    ensureCurrentRoleInOptions(record);
   }
 
   function handleDetail(record: Recordable) {
